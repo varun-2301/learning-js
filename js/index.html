@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question and Answer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .qa-container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+        }
+        .question {
+            cursor: pointer;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .answer {
+            display: none;
+            background-color: #fafafa;
+            border-left: 2px solid #007BFF;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="qa-container">
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Deep Copy & Shallow copy
+            </div>
+            <div class="answer">
+                <b>Shallow Copy</b>
+                    <p>
+                        When we assign an object to another object, a shallow copy is created and the both object share same address. So, change in any one object may affect the other object as well
+                    </p>
+                <br>
+                <b>Deep Copy</b>
+                <p>
+                    <ul>
+                        <li>
+                            When we assign an object to another object, to create a deep copy we use <b>JSON.Parse</b> or <b>JSON.Stringify</b> so that change in any one object may not affect the other object as well
+                        </li>
+                        <li>
+                            This method is useful when the object is small and has serializable properties. But if the object is very large and contains certain non-serializable properties then there is a risk of data loss
+                        </li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Promises
+            </div>
+            <div class="answer">
+                It is an object which represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+                <p>
+                    <h4>Example</h4>
+                    const myPromise = new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve("foo");
+                        }, 300);
+                    });
+                </p>
+            </div>
+        </div>
+        
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Callbacks
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>Function which is passed as an argument to another function</li>
+                    <li>It gives access to asynchronous functionality as JS is a synchrounous & single-threaded lang</li>
+                </ul>
+                <p>
+                    <h4>Example</h4>
+                    <section>
+                        const y = function () {
+                            console.log('y called')
+                            //here we can call an api which will work asynchronously
+                        }
+                    </section>
+                    <br>
+                    <section>
+                        const x = function (message, callback){
+                            console.log(message)
+                            callback()
+                        }
+                    </section>
+                    <br>
+                    x('first function', y)  //calling the function
+                </p>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Diff b/w promises and callbacks
+            </div>
+            <div class="answer">
+                <h4>Callback</h4>
+                <ul>
+                    <li>The syntax is difficult to understand</li>
+                    <li>Error handling may be hard to manage</li>
+                    <li>create callback hell and inversion of control</li>
+                </ul>
+
+                <h4>Promises</h4>
+                <ul>
+                    <li>syntax is user-friendly and easy to read because of then and catch</li>
+                    <li>Error handling is easier to manage using catch block</li>
+                    <li>resolves callback hell and inversion of control</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                High order functions
+            </div>
+            <div class="answer">
+                a higher-order function is a function that can accept other functions as arguments, return functions, or both
+                <h4>Example 1</h4>
+                    function greet(name) { 
+                        return `Hi!! ${name} `; 
+                    } 
+                    
+                    function greet_name(greeting, message, name) { 
+                        console.log(`${greeting(name)} ${message}`); 
+                    } 
+                    
+                    greet_name(greet, 'Welcome To Example', 'Varun');
+        
+                <br>
+                <h4>Example 2</h4>
+                    function multiplier(factor) { 
+                        return function (x) { 
+                            return x * factor; 
+                        }; 
+                    } 
+                    
+                    const double = multiplier(2); 
+                    const triple = multiplier(3); 
+                    
+                    console.log(double(5)); 
+                    console.log(triple(5));
+                
+        
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Types of function in JS
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Call, apply & bind usage
+            </div>
+            <div class="answer">
+                github link
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Ways to create object
+            </div>
+            <div class="answer">
+                <h4>Creating object with a constructor</h4>
+                    <section>
+                        function vehicle(name) {
+                            this.name = name;
+                        }
+                        // New keyword to create an object
+                        let car = new vehicle('GT')
+                    </section>
+                <h4>Using object literals</h4>
+                    <section>
+                        var car = {}
+                    </section>
+                <h4>Creating object with Object.create() method</h4>
+                    <p>creates a new object, using an existing object as the prototype of the newly created object</p>
+                    <section>
+                        const coder = {
+                            isStudying : false,
+                            printIntroduction : function(){
+                                console.log(`My name is ${this.name}. Am I studying?: ${this.isStudying}`);
+                            }
+                        };
+                        const me = Object.create(coder);
+                        me.name = 'Mukul';
+                        me.isStudying = true;
+                        me.printIntroduction()
+                    </section>
+                <h4>Using es6 classes</h4>
+                    <section>
+                        class Vehicle {
+                            constructor(name) {
+                                this.name = name;
+                            }
+                        }
+                    
+                        let car1 = new Vehicle('BMW')
+                    </section>
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Typescript
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Throttling
+            </div>
+            <div class="answer">
+                github link
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Debouncing
+            </div>
+            <div class="answer">
+                github link
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Diff b/w null & undefined
+            </div>
+            <div class="answer">
+                <h4>null</h4>
+                <p>null is an assignment value, meaning that a variable has been declared and given the value of null </p>
+
+                <h4>undefined</h4>
+                <p>undefined means a variable has been declared but has not yet been assigned a value</p>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Falsy values in JS
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>0</li>
+                    <li>empty</li>
+                    <li>string</li>
+                    <li>null</li>
+                    <li>undefined</li>
+                    <li>NAN</li>
+                    <li>false</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Object.seal & object.freeze
+            </div>
+            <div class="answer">
+                <h4>Object.seal</h4>
+                <ul>
+                    <li>We cannot add/delete property from object</li>
+                    <li>We can only modify the object</li>
+                </ul>
+
+                <h4>Object.freeze</h4>
+                <ul>
+                    <li>We cannot only add/modify/delete the object</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Hoisting
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>when execution context is created, first all variables are defined in memory along with function declarations(if any present) and all the variables have been allocated the default value i.e. undefined</li>
+                    <li>now, if we are trying to access any variable before it is declared i.e. variable is defined and value is assigned like in example below, it gives output as undefined. this concept is called Hoisting</li>
+                </ul>
+                <p>
+                    console.log(a)
+                    var a = 8
+                </p>
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Event Loop
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Scope Chain
+            </div>
+            <div class="answer">
+                Scope Chain means that one variable has a scope (it may be global or local/function or block scope) is used by another variable or function having another scope (may be global or local/function or block scope).
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Closures
+            </div>
+            <div class="answer">
+                function along with its lexical environment
+                <h4>Example</h4>
+                    function x(){
+                        var a = 7
+                        function y(){
+                            console.log(a)
+                        }
+                        y()
+                    }
+                    x()
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Lexical Environment
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>lexical means in order / hierarchy</li>
+                    <li>It is the local memory along with the lexical environment of its parent</li>
+                </ul>
+                <h4>Example</h4>
+                    function a(){
+                        var b = 10
+                        c()
+                        function c(){
+                            console.log(b)
+                        }
+                    }
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Prototype
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Prototype Inheritance
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+        
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Event Bubbling, Capturing/Trickling
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+        
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Event Delegation
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+        
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Event Propagation
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                First class functions
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                Function statement or Function declaration vs Function expression
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                localstorage vs cookie
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                map, filter & reduce
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                generator function in js
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                dead zone in js
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>as we know, let & const variables are hoisted outside the global execution context</li>
+                    <li>it is the time when the varibales i.e. let & const variables are hoisted and then these variables are actually assigned any value to them.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                function currying
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item" style="color:red">
+            <div class="question" onclick="toggleAnswer(this)">
+                mutation observer in js
+            </div>
+            <div class="answer">
+                still need to find
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                primitive & non-primitive data types
+            </div>
+            <div class="answer">
+                <h4>Primitive</h4>
+                which are pre-defined i.e. their definition is already defined
+                <ul>
+                    <li>Number</li>
+                    <li>String</li>
+                    <li>undefined</li>
+                    <li>null</li>
+                    <li>symbol</li>
+                    <li>bigint</li>
+                    <li>boolean</li>
+                </ul>
+
+                <br>
+                <h4>Non-Primitive</h4>
+                which are defined by the user i.e. custom built
+                <ul>
+                    <li>Object</li>
+                    <li>Arrays</li>
+                    <li>Functions</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

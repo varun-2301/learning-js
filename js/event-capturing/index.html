@@ -1,0 +1,25 @@
+<html>
+    <title>JS</title>
+    <style>
+        div{
+            min-width: 100px;
+            min-height: 100px;
+            padding: 30px;
+            border: 1px solid black;
+        }
+    </style>
+    <body>
+        <div id="one">
+            <div id="two">
+                <div id="three"></div>
+            </div>
+        </div>
+    </body>
+    <script src="index.js"></script>
+</html>
+
+<!-- 
+    for this event to happen, we have to pass the 3rd argument in the event listers call as true
+    capturing means from clicked element to bottom most
+    capturing does not work on events like blur, resize etc
+-->

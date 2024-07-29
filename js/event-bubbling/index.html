@@ -1,0 +1,25 @@
+<html>
+    <title>JS</title>
+    <style>
+        div{
+            min-width: 100px;
+            min-height: 100px;
+            padding: 30px;
+            border: 1px solid black;
+        }
+    </style>
+    <body>
+        <div id="one">
+            <div id="two">
+                <div id="three"></div>
+            </div>
+        </div>
+    </body>
+    <script src="index.js"></script>
+</html>
+
+<!-- 
+    by default, event listers executes bubbling by setting the event listener 3rd argument as false
+    bubbling means from clicked element to top most
+    capturing does not work on events like blur, resize etc
+-->
