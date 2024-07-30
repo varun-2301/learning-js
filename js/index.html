@@ -84,22 +84,7 @@
                     <li>It gives access to asynchronous functionality as JS is a synchrounous & single-threaded lang</li>
                 </ul>
                 <p>
-                    <h4>Example</h4>
-                    <section>
-                        const y = function () {
-                            console.log('y called')
-                            //here we can call an api which will work asynchronously
-                        }
-                    </section>
-                    <br>
-                    <section>
-                        const x = function (message, callback){
-                            console.log(message)
-                            callback()
-                        }
-                    </section>
-                    <br>
-                    x('first function', y)  //calling the function
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/callbacks" target="_blank">Link to example</a>
                 </p>
             </div>
         </div>
@@ -160,12 +145,27 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Types of function in JS
             </div>
             <div class="answer">
-                still need to find
+                <h4>Named Functions or Function Declaration</h4>
+                    function add(a, b) {         
+                        console.log(a + b)
+                    }
+
+                <h4>Anonymous Functions or Function Expression</h4>
+                    const add = function (a, b) {
+                        console.log(a + b)
+                    }
+
+                <h4>Arrow Functions</h4>
+                    let helloWorld = () => { 
+                        console.log('Hello World!'); 
+                    }
+
+                
             </div>
         </div>
 
@@ -174,7 +174,14 @@
                 Call, apply & bind usage
             </div>
             <div class="answer">
-                github link
+                <ul>
+                    <li><b>CALL</b> invokes the function and allows you to pass in arguments one by one</li>
+                    <li><b>APPLY</b> invokes the function and allows you to pass in arguments as an array</li>
+                    <li><b>BIND</b> returns a new function, allowing you to pass in a this array and any number of arguments</li>
+                </ul>
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/call-bind-apply" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
 
@@ -222,21 +229,16 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
-            <div class="question" onclick="toggleAnswer(this)">
-                Typescript
-            </div>
-            <div class="answer">
-                still need to find
-            </div>
-        </div>
-
         <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Throttling
             </div>
             <div class="answer">
-                github link
+                Throttling is a mechanism by which we can reduce/limit the number of call of fn by calling the function 
+                after given the time limit
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/throttle" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
 
@@ -245,7 +247,12 @@
                 Debouncing
             </div>
             <div class="answer">
-                github link
+                Debouncing is a mechanism by which we can reduce the number of call of fn by delaying the 
+                calls to a given time which will be executed when the difference b/w two concurrent events is
+                greater than the given time
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/debounce" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
 
@@ -313,12 +320,18 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Event Loop
             </div>
             <div class="answer">
-                still need to find
+                <ul>
+                    <li>During execution of code, if the V8 engine encounters any web api's then those stack of code are kept outside global execution context of call stack</li>
+                    <li>Once the global execution context is finished and all code are executed, the code kept outside are pushed into the CALLBACK QUEUE</li>
+                    <li>Now, the event loop checks that if anything operation is pending or waiting in callback queue to be executed</li>
+                    <li>If the event loop finds any operation, it extracts from callback queue and puts in the call stack to be executed</li>
+                    <li>So, in simple terms event loop is a process to check & compare if there is any operation pending in the callback queue only after the call stack is empty. If it is then it will move the said operation from call back queue to call stack</li>
+                </ul>
             </div>
         </div>
 
@@ -336,16 +349,11 @@
                 Closures
             </div>
             <div class="answer">
-                function along with its lexical environment
-                <h4>Example</h4>
-                    function x(){
-                        var a = 7
-                        function y(){
-                            console.log(a)
-                        }
-                        y()
-                    }
-                    x()
+                A closure is the combination of a function bundled together (enclosed) with references to its surrounding 
+                state (the lexical environment)
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/closures" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
 
@@ -387,48 +395,91 @@
             </div>
         </div>
         
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Event Bubbling, Capturing/Trickling
             </div>
             <div class="answer">
-                still need to find
+                <h4>Event Bubbling</h4>
+                <ul>
+                    <li>When we clicked any DOM element and attached event listener to it then the event listener attached to it and its parent, its grandparent till it reaches to the top most DOM element gets executed</li>
+                    <li>This process of getting all the listeners executed from bottom to top of the element (where the event took place) is called event bubbling</li>
+                </ul>
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/event-bubbling" target="_blank">Link to example</a>
+                </p>
+                <br><br>
+                <h4>Event Capturing/Trickling</h4>
+                <ul>
+                    <li>When we clicked any DOM element and attached event listener to it then the event listener attached to it and its children, its grandchildren till it reaches to the bottom most DOM element gets executed</li>
+                    <li>This process of getting all the listeners executed from top to bottom of the element (where the event took place) is called event capturing / trickling</li>
+                </ul>
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/event-capturing" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
         
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Event Delegation
             </div>
             <div class="answer">
-                still need to find
+                It is a mechanism/process by which we delegate the pre-decessor events/functionalities to its parent
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/event-delegation" target="_blank">Link to example</a>
+                </p>
             </div>
         </div>
         
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Event Propagation
             </div>
             <div class="answer">
-                still need to find
+                <li>The process of deciding in which direction and when the events will move forward i.e. from top to bottom or bottom to top is called Event Propagation</li>
+                <li>Its example are Event Bubbling and Event Capturing</li>
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 First class functions
             </div>
             <div class="answer">
-                still need to find
+                <li>These are the functions can be assigned to any other variable or passed as an argument or can be returned by another function.</li>
+                <li>See below example where functions are stored as a variable in an object</li>
+                <h4>Example</h4>
+                const Arithmetics = {
+                    add:(a, b) => {
+                        return `${a} + ${b} = ${a+b}`;
+                    },
+                    subtract:(a, b) => {
+                        return `${a} - ${b} = ${a-b}`
+                    }                
+                }
+                
+                console.log(Arithmetics.add(100, 100));
+                console.log(Arithmetics.subtract(100, 7));
+                
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Function statement or Function declaration vs Function expression
             </div>
             <div class="answer">
-                still need to find
+                <h4>Function statement or Function declaration</h4>
+                Functions which have name as well as body defined 
+                
+                <h4>Function expression</h4>
+                Functions which are used as values to assign in some variables and do not have any name to it
+
+                <p>
+                    <a href="https://github.com/varun-2301/learning-js/tree/main/js/functions" target="_blank">Link to example</a>
+                </p>
+
             </div>
         </div>
 
