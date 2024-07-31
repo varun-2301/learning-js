@@ -247,9 +247,10 @@
                 Debouncing
             </div>
             <div class="answer">
-                Debouncing is a mechanism by which we can reduce the number of call of fn by delaying the 
-                calls to a given time which will be executed when the difference b/w two concurrent events is
-                greater than the given time
+                <ul>
+                    <li>Debouncing is a mechanism by which we can reduce the number of call to a function</li>
+                    <li>This call will be executed when the difference b/w two concurrent events is greater than the given time</li> 
+                </ul>
                 <p>
                     <a href="https://github.com/varun-2301/learning-js/tree/main/js/debounce" target="_blank">Link to example</a>
                 </p>
@@ -377,21 +378,32 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Prototype
             </div>
             <div class="answer">
-                still need to find
+                <ul>
+                    <li>it is an object which gets attached to any array/ object/ function when declared</li>
+                    <li>due to this, the array/object/function gets accessed to all the inbuilt methods of javascript</li>
+                </ul>
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 Prototype Inheritance
             </div>
             <div class="answer">
-                still need to find
+                <ul>
+                    <li>It is a process where one object prototype inherits properties of another object</li>
+                    <li>We can achieve this in 2 ways:</li>
+                        ==> if the new prototype(something) is a plain object, use 
+                            Object.setPrototypeOf(obj, something)
+                        <br>
+                        ==> if the new prototype is based on an ES5-and-below-style constructor or  if the new prototype is an ES6 class
+                            Object.setPrototypeOf(obj, Something.prototype)
+                </ul>
             </div>
         </div>
         
@@ -492,12 +504,28 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 map, filter & reduce
             </div>
             <div class="answer">
-                still need to find
+                <h4>MAP</h4>
+                <ul>
+                    <li>It is a high order function which takes a function as argument and returns a new array</li>
+                    <li>It iterates over an array</li>
+                </ul>
+                <br>
+                <h4>FILTER</h4>
+                <ul>
+                    <li>It is a high order function which takes a function as argument and returns a new filtered array based on requirements</li>
+                    <li>It iterates over an array</li>
+                </ul>
+                <br>
+                <h4>REDUCE</h4>
+                <ul>
+                    <li>It is a high order function which takes a function as argument and returns a single value/object</li>
+                </ul>
+                <br>
             </div>
         </div>
 
@@ -522,12 +550,34 @@
             </div>
         </div>
 
-        <div class="qa-item" style="color:red">
+        <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
                 function currying
             </div>
             <div class="answer">
-                still need to find
+                <ul>
+                    <li>It is a technique in functional programming, that transforms the function of multiple arguments into several functions of a single argument in sequence</li>
+                    <li>It can be achieved via 2 types i.e. via using <b>bind</b> method and via <b>closures</b></li>
+                </ul>
+                
+                <h4>Example using Bind</h4>
+                let multiply = function(x, y){
+                    console.log(x * y)
+                }
+
+                let multiplyByTwo = multiply.bind(this, 2)
+                multiplyByTwo(3)
+
+                <h4>Example using Closures</h4>
+                let multiply = function(x){
+                    return function(y){
+                        console.log(x * y)
+                    }
+                }
+
+                let multiplyByThree = multiply(3)
+                multiplyByThree(3)
+                
             </div>
         </div>
 
