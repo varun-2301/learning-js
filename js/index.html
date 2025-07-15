@@ -609,6 +609,50 @@
             </div>
         </div>
 
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                SOLID principles
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>S - Single Responsibilty Principle - each function should have single Responsibilty</li>
+                    <li>O - Open/Closed Principle - Classes/functions should be open for extension but closed for modification</li>
+                    <li>L - Liskov Substitute Principle - subclasses should be responsible for parent classes without breaking anything</li>
+                    <li>I - Interface Segregation Principle - do not use interface too much, make it small and clear</li>
+                    <li>D - Dependency Inversion Principle - High level modules should not be dependent on low level modules. both should work with abstraction</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                CORE WEB VITALS
+            </div>
+            <div class="answer">
+                <ul>
+                    LCP: <=2.5 - Measures time to load the largest block on webpage i.e. image/text block
+                    INP: <=200 - Measures how quickly UI responds to any user input
+                    CLS: <=0.1 - Measures how much visible content moves unexpectedly
+                    
+                    <li>
+                        LCP (Largest Contentful Paint): 
+                        - Should be less than 2.5 for good user experience 
+                        - Measures time to load the largest block on webpage i.e. image/text block
+                    </li>
+                    <li>
+                        INP (Interaction to Next Paint): 
+                        - Should be less than 200 for good user experience 
+                        - Measures how quickly UI responds to any user input
+                    </li>
+                    <li>
+                        CLS (Cumulative Layout Shift): 
+                        - Should be less than 0.1 for good user experience
+                        - Measures how much visible content moves unexpectedly
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
     <script>
