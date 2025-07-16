@@ -23,8 +23,8 @@
         }
         .answer {
             display: none;
-            background-color: #fafafa;
-            border-left: 2px solid #007BFF;
+            background-color: #fff;
+            border: 2px solid #007BFF;
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
@@ -41,18 +41,53 @@
                 <b>Shallow Copy</b>
                     <p>
                         When we assign an object to another object, a shallow copy is created and the both object share same address. So, change in any one object may affect the other object as well
+                        <h4>Example</h4>
+                        <pre>
+                        const original = {
+                            name: "Varun",
+                            address: {
+                                city: "Delhi"
+                            }
+                        };
+
+                        const shallowCopy = { ...original }
+                                    OR
+                        const shallowCopy = original
+                                    OR
+                        const shallowCopy = Object.assign({}, original)
+
+                        // Modify nested property
+                        shallowCopy.address.city = "Mumbai";
+
+                        console.log(original.address.city); // ❗ "Mumbai" – affected original!
+                        </pre>
                     </p>
                 <br>
                 <b>Deep Copy</b>
                 <p>
                     <ul>
                         <li>
-                            When we assign an object to another object, to create a deep copy we use <b>JSON.Parse</b> or <b>JSON.Stringify</b> so that change in any one object may not affect the other object as well
+                            When we assign an object to another object, to create a deep copy we use <b>JSON.Parse</b> and <b>JSON.Stringify</b> OR <b>structuredClone</b> so that change in any one object may not affect the other object as well
                         </li>
                         <li>
                             This method is useful when the object is small and has serializable properties. But if the object is very large and contains certain non-serializable properties then there is a risk of data loss
                         </li>
                     </ul>
+                    <h4>Example</h4>
+                    <pre>
+                    const original = {
+                        name: "Varun",
+                        address: {
+                            city: "Delhi"
+                        }
+                    };
+
+                    const deepCopy = JSON.parse(JSON.stringify(original));
+
+                    deepCopy.address.city = "Mumbai";
+
+                    console.log(original.address.city); // ✅ "Delhi" – original not affected
+                    </pre>
                 </p>
             </div>
         </div>
@@ -65,11 +100,13 @@
                 It is an object which represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
                 <p>
                     <h4>Example</h4>
+                    <pre>
                     const myPromise = new Promise((resolve, reject) => {
                         setTimeout(() => {
                             resolve("foo");
                         }, 300);
                     });
+                    </pre>
                 </p>
             </div>
         </div>
@@ -214,11 +251,41 @@
                     <li>We cannot add/delete property from object</li>
                     <li>We can only modify the object</li>
                 </ul>
+                <h6>Example</h6>
+                <pre>
+                    const user = {
+                        name: "Varun",
+                        age: 30
+                    };
+                    
+                    Object.seal(user);
+
+                    user.name = "Vikram";    // ✅ Allowed
+                    user.city = "Delhi";     // ❌ Not added
+                    delete user.age;         // ❌ Not allowed
+                </pre>
 
                 <h4>Object.freeze</h4>
                 <ul>
                     <li>We cannot only add/modify/delete the object</li>
                 </ul>
+                <h6>Example</h6>
+                <pre>
+                const config = {
+                    theme: "dark",
+                    version: 1.0
+                };
+
+                Object.freeze(config);
+
+                config.theme = "light";  // ❌ Not changed
+                config.mode = "auto";    // ❌ Not added
+                delete config.version;   // ❌ Not allowed
+                </pre>
+
+                <h4>
+                    <strong>Both seal() and freeze() are shallow by default — they do not affect nested objects.</strong>
+                </h4>
             </div>
         </div>
 
@@ -272,13 +339,15 @@
                     <li>It is the local memory along with the lexical environment of its parent</li>
                 </ul>
                 <h4>Example</h4>
-                    function a(){
-                        var b = 10
-                        c()
-                        function c(){
-                            console.log(b)
-                        }
+                <pre>
+                function a(){
+                    var b = 10
+                    c()
+                    function c(){
+                        console.log(b)
                     }
+                }
+                </pre>
             </div>
         </div>
 
@@ -301,13 +370,23 @@
             <div class="answer">
                 <ul>
                     <li>It is a process where one object prototype inherits properties of another object</li>
-                    <li>We can achieve this in 2 ways:</li>
-                        ==> if the new prototype(something) is a plain object, use 
-                            Object.setPrototypeOf(obj, something)
-                        <br>
-                        ==> if the new prototype is based on an ES5-and-below-style constructor or  if the new prototype is an ES6 class
-                            Object.setPrototypeOf(obj, Something.prototype)
                 </ul>
+                <h4>Example</h4>
+                <pre>
+                const animal = {
+                    eats: true,
+                    walk() {
+                        console.log("Animal walks");
+                    }
+                }
+
+                const dog = Object.create(animal); // dog inherits from animal
+                dog.barks = true;
+
+                console.log(dog.eats); // ✅ true (inherited)
+                dog.walk();            // ✅ "Animal walks"
+                console.log(dog.barks); // ✅ true (own property)
+                </pre>
             </div>
         </div>
         

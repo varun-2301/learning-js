@@ -1,5 +1,5 @@
 /**
- * write a function that takes an array and a chunk size, and returns an array of arrays (chunks) of the specified size
+ * takes an array and a chunk size, and returns an array of arrays (chunks) of the specified size
  * if the array cannot be evenly divided, the last chunk will contain the remaining elements
  */
 
