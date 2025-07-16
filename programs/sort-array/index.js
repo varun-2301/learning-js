@@ -1,13 +1,11 @@
 function bubbleSort(array) {
-    var done = false;
+    let done = false;
     while (!done) {
         done = true;
         for (var i = 1; i < array.length; i += 1) {
             if (array[i - 1] > array[i]) {
                 done = false;
-                var tmp = array[i - 1];
-                array[i - 1] = array[i];
-                array[i] = tmp;
+                [array[i-1], array[i]] = [array[i], array[i-1]]
             }
         }
     }
@@ -15,9 +13,6 @@ function bubbleSort(array) {
     return array
 }
   
-var numbers = [12, 10, 15, 11, 14, 13, 16];
-console.log("=====array before sorting======")
-console.log(numbers)
+var numbers = [12, 10, 15, 11, 14, 1, 16];
 bubbleSort(numbers)
-console.log("=====array after sorting======")
 console.log(numbers)

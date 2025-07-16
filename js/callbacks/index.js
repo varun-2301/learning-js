@@ -16,9 +16,12 @@ x('first function', y)  //calling the function
 /**callbacks with the help of closures */
 function handleClick(){
     let count = 0;
-    document.querySelector('#click').addEventListener('click', function(){
+
+    function onButtonClick() {
         console.log('button clicked', ++count);
-    });
+    }
+
+    document.querySelector('#click').addEventListener('click', onButtonClick);
 }
 
 handleClick();
