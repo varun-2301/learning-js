@@ -25,12 +25,6 @@ window.addEventListener('resize', newFunction)
 /*
     want to log or update layout at most once every 300ms, even if resize happens 1000 times/second
 */
-window.addEventListener("resize", handleResize);
-
-const resize = throttle1(() => {
-    console.log('throttle', new Date().toLocaleString())
-})
-
 function throttle1(fn, delay){
     let lastCall = 0
     return function(...args){
@@ -41,3 +35,9 @@ function throttle1(fn, delay){
         }
     }
 }
+
+const handleResize = throttle1(() => {
+    console.log('throttle', new Date().toLocaleString())
+})
+
+window.addEventListener("resize", handleResize);

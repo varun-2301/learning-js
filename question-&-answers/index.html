@@ -148,6 +148,132 @@
 
         <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
+                Promises in Sequence
+            </div>
+            <div class="answer">
+                Promises in sequence means ensuring that each asynchronous operation starts only after the previous one has completed
+                <p>
+                    <h4>Example</h4>
+                    <pre>
+                    const urls = ['url1', 'url2', 'url3'];
+
+                    function fetchData(url) {
+                        return new Promise(resolve => {
+                            setTimeout(() => resolve(`Fetched from ${url}`), 1000);
+                        });
+                    }
+
+                    urls.reduce((promiseChain, currentUrl) => {
+                        return promiseChain.then(() => fetchData(currentUrl).then(console.log));
+                    }, Promise.resolve());
+
+
+                    ✅ Using async/await in a loop (Recommended for readability)
+                    async function fetchInSequence() {
+                        for (let url of urls) {
+                            const data = await fetchData(url);
+                            console.log(data);
+                        }
+                    }
+                    </pre>
+                </p>
+                <p>NOTE:
+                    <ul>
+                        <li>map + Promise.all() is for parallel execution.</li>
+                        <li>forEach + async/await won’t work for sequencing because forEach doesn’t wait.</li>
+                        <li>Use for...of or reduce() to control sequence.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Promise.all(), Promise.allSettled(), Promise.race(), Promise.any()
+            </div>
+            <div class="answer">
+                <h4>Promise.all()</h4>
+                <ul>
+                    <li>Waits for all promises to resolve</li>
+                    <li>If any one fails, the entire result is rejected</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+                    const p1 = Promise.resolve(1);
+                    const p2 = Promise.resolve(2);
+                    const p3 = Promise.reject("Error");
+
+                    Promise.all([p1, p2, p3])
+                    .then(results => console.log(results))
+                    .catch(err => console.error("Caught:", err));
+
+                    ❌ Output: Caught: Error
+                </pre>
+
+                <br>
+                <h4>Promise.allSettled()</h4>
+                <ul>
+                    <li>Waits for all promises to settle (resolve or reject)</li>
+                    <li>Never rejects. Returns an array of { status, value/reason }.</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+                    const p1 = Promise.resolve("A");
+                    const p2 = Promise.reject("Failed");
+                    const p3 = Promise.resolve("B");
+
+                    Promise.allSettled([p1, p2, p3])
+                            .then(results => console.log(results));
+
+                    ✅ Output:
+                    [
+                        { status: 'fulfilled', value: 'A' },
+                        { status: 'rejected', reason: 'Failed' },
+                        { status: 'fulfilled', value: 'B' }
+                    ]
+                </pre>
+
+                <br>
+                <h4>Promise.race()</h4>
+                <ul>
+                    <li>Returns the first settled promise (resolved or rejected)</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+                    const p1 = new Promise(resolve => setTimeout(() => resolve("A"), 300));
+                    const p2 = new Promise((_, reject) => setTimeout(() => reject("B"), 200));
+
+                    Promise.race([p1, p2])
+                    .then(result => console.log("Resolved:", result))
+                    .catch(err => console.log("Rejected:", err));
+
+                    ❌ Output: Rejected: B (p2 settled first)
+                </pre>
+
+                <br>
+                <h4>Promise.any()</h4>
+                <ul>
+                    <li>Returns the first fulfilled promise</li>
+                    <li>Ignores rejections unless all fail, then throws AggregateError.</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+                    const p1 = Promise.reject("Fail 1");
+                    const p2 = Promise.reject("Fail 2");
+                    const p3 = Promise.resolve("Success!");
+
+                    Promise.any([p1, p2, p3])
+                    .then(result => console.log("Success:", result))
+                    .catch(err => console.log("All failed:", err));
+                    
+                    ✅ Output: Success: Success!
+                </pre>
+                <br>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
                 Diff b/w promises and callbacks
             </div>
             <div class="answer">
@@ -174,31 +300,32 @@
             <div class="answer">
                 a higher-order function is a function that can accept other functions as arguments, return functions, or both
                 <h4>Example 1</h4>
-                    function greet(name) { 
-                        return `Hi!! ${name} `; 
-                    } 
-                    
-                    function greet_name(greeting, message, name) { 
-                        console.log(`${greeting(name)} ${message}`); 
-                    } 
-                    
-                    greet_name(greet, 'Welcome To Example', 'Varun');
-        
+                <pre>
+                function greet(name) { 
+                    return `Hi!! ${name} `; 
+                } 
+                
+                function greet_name(greeting, message, name) { 
+                    console.log(`${greeting(name)} ${message}`); 
+                } 
+                
+                greet_name(greet, 'Welcome To Example', 'Varun');
+                </pre>
                 <br>
                 <h4>Example 2</h4>
-                    function multiplier(factor) { 
-                        return function (x) { 
-                            return x * factor; 
-                        }; 
-                    } 
-                    
-                    const double = multiplier(2); 
-                    const triple = multiplier(3); 
-                    
-                    console.log(double(5)); 
-                    console.log(triple(5));
+                <pre>
+                function multiplier(factor) { 
+                    return function (x) { 
+                        return x * factor; 
+                    }; 
+                } 
                 
-        
+                const double = multiplier(2); 
+                const triple = multiplier(3); 
+                
+                console.log(double(5)); 
+                console.log(triple(5));
+                </pre>
             </div>
         </div>
 
@@ -209,19 +336,24 @@
             <div class="answer">
                 <h4>Creating object with a constructor</h4>
                     <section>
+                        <pre>
                         function vehicle(name) {
                             this.name = name;
                         }
                         // New keyword to create an object
                         let car = new vehicle('GT')
+                        </pre>
                     </section>
                 <h4>Using object literals</h4>
                     <section>
+                        <pre>
                         var car = {}
+                        </pre>
                     </section>
                 <h4>Creating object with Object.create() method</h4>
                     <p>creates a new object, using an existing object as the prototype of the newly created object</p>
                     <section>
+                        <pre>
                         const coder = {
                             isStudying : false,
                             printIntroduction : function(){
@@ -232,9 +364,11 @@
                         me.name = 'Mukul';
                         me.isStudying = true;
                         me.printIntroduction()
+                        </pre>
                     </section>
                 <h4>Using es6 classes</h4>
                     <section>
+                        <pre>
                         class Vehicle {
                             constructor(name) {
                                 this.name = name;
@@ -242,6 +376,7 @@
                         }
                     
                         let car1 = new Vehicle('BMW')
+                        </pre>
                     </section>
             </div>
         </div>
@@ -252,10 +387,29 @@
             </div>
             <div class="answer">
                 <h4>null</h4>
-                <p>null is an assignment value, meaning that a variable has been declared and given the value of null </p>
+                <p>null is an assignment value, meaning that a variable has been declared and assigned the value as null </p>
 
                 <h4>undefined</h4>
-                <p>undefined means a variable has been declared but has not yet been assigned a value</p>
+                <p>undefined means a variable has been declared but has not yet been assigned any value. so by default, undefined is assigned to it</p>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Diff b/w setTimeout and setInterval
+            </div>
+            <div class="answer">
+                <h4>setTimeout</h4>
+                <ul>
+                    <li>it schedules a single execution after a specified delay</li>
+                    <li>It is used for one-time delays or scheduling a task in the future</li>
+                </ul>
+
+                <h4>setInterval</h4>
+                <ul>
+                    <li>It repeatedly executes a function with a fixed interval</li>
+                    <li>It is suitable for recurring tasks</li>
+                </ul>
             </div>
         </div>
 

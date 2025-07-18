@@ -1,5 +1,5 @@
 /** 
- * Flatten a nested array and remove duplicates.
+ * Flatten a nested array, remove duplicates and sort the array in ascending order.
 */
 
 function flatten(arr) {
