@@ -1,4 +1,14 @@
 Array.prototype.myReduce = function(callback, initialValue) {
+    if (this === null)
+        throw new TypeError('called on null')
+
+    if (this.length === 0 && initialValue === undefined) {
+        throw new TypeError("Reduce of empty array with no initial value");
+    }
+
+    if (typeof callback !== 'function')
+        throw new TypeError('callback not a function')
+
     let startIndex = 0;
     let accumulator = initialValue;
 
