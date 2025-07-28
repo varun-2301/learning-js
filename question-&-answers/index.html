@@ -669,23 +669,26 @@
                 </ul>
                 
                 <h4>Example using Bind</h4>
-                let multiply = function(x, y){
-                    console.log(x * y)
-                }
-
-                let multiplyByTwo = multiply.bind(this, 2)
-                multiplyByTwo(3)
-
-                <h4>Example using Closures</h4>
-                let multiply = function(x){
-                    return function(y){
+                <pre>
+                    let multiply = function(x, y){
                         console.log(x * y)
                     }
-                }
+    
+                    let multiplyByTwo = multiply.bind(this, 2)
+                    multiplyByTwo(3)
+                </pre>
 
-                let multiplyByThree = multiply(3)
-                multiplyByThree(3)
-                
+                <h4>Example using Closures</h4>
+                <pre>
+                    let multiply = function(x){
+                        return function(y){
+                            console.log(x * y)
+                        }
+                    }
+    
+                    let multiplyByThree = multiply(3)
+                    multiplyByThree(3)
+                </pre>
             </div>
         </div>
 
@@ -812,6 +815,46 @@
                 };
 
                 </pre>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Pipe & Compose
+            </div>
+            <div class="answer">
+                <p>
+                    Pipe and Compose are functional programming utilities that let you combine multiple functions into a single function. 
+                    The only difference is order of execution:
+                    <br/>
+                    <b>pipe:</b> left-to-right
+                    <br/>
+                    <b>compose:</b> right-to-left
+
+                    <h4>Example</h4>
+                    <pre>
+                    const add = x => x + 1;
+                    const multiply = x => x * 2;
+                    const subtract = x => x - 3;
+
+                    // Using pipe
+                    const pipe = (...fns) => input => fns.reduce((acc, fn) => fn(acc), input);
+                    const pipeResult = pipe(add, multiply, subtract)(5); // ((5 + 1) * 2) - 3 = 9
+
+                    // Using compose
+                    const compose = (...fns) => input => fns.reduceRight((acc, fn) => fn(acc), input);
+                    const composeResult = compose(add, multiply, subtract)(5); // (5 - 3) * 2 + 1 = 9
+
+                    // Simple explanation:
+                    const compose = (...fns) => {
+                        return function(input) {
+                            return fns.reduce(function(acc, fn) {
+                                return fn(acc); // apply current function to result of previous
+                            }, input) // start with initial input
+                        }
+                    }
+                    </pre>
+                </p>
             </div>
         </div>
     </div>
