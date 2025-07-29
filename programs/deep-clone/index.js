@@ -4,7 +4,7 @@
  */
 
 function deepClone(obj){
-    if(obj === null || typeof obj !== 'object')
+    if(obj === null || typeof obj !== 'object') //null or primitive values cloned will be same
         return obj
 
     const cloneObj = Array.isArray(obj) ? [] : {}

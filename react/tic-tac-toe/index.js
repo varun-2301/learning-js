@@ -1,6 +1,13 @@
 /**
  * Tic Tac Toe Game
  * A simple React implementation of the classic Tic Tac Toe game.
+ * Steps to build
+ * 1. Create a 3x3 grid for the game board.
+ * 2. Allow players to take turns placing 'X' and 'O'.
+ * 3. Check for a winner after each move.
+ * 4. Display the winner or a draw message.
+ * 5. Provide a reset button to start a new game.
+ * 6. Style the game for better user experience.
  */
 
 const calculateWinner = (squares) => {
