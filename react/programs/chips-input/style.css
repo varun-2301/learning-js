@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.chips-input {
+    padding: 8px;
+    width: 200px;
+}
+
+.chips-list {
+    margin: 20px;
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+}
+
+.chips-container {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    background-color: lightgray;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.chips-button {
+    background: transparent;
+    border: none;
+    margin-left: 8px;
+    cursor: pointer;
+    color: red
+}
+
