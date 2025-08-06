@@ -1,0 +1,86 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.input-group button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+
+.filter-buttons {
+  margin: 1rem 0;
+}
+
+.filter-buttons button {
+  margin: 0 0.5rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.filter-buttons .active {
+  background-color: black;
+  color: white;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-item {
+  background: #f1f1f1;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.todo-text {
+  font-size: 1rem;
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.actions button {
+  margin-left: 0.5rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
