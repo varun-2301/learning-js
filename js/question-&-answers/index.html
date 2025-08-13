@@ -524,6 +524,27 @@
                     <li>If the event loop finds any operation, it extracts from callback queue and puts in the call stack to be executed</li>
                     <li>So, in simple terms event loop is a process to check & compare if there is any operation pending in the callback queue only after the call stack is empty. If it is then it will move the said operation from call back queue to call stack</li>
                 </ul>
+
+                <h4>Detailed Explanation</h4>
+                <pre>
+                <strong>Foundation</strong>
+                JavaScript is single-threaded with a call stack, but handles async operations through the event loop coordinating between the JS engine and runtime APIs.
+
+                <strong>Components</strong>
+                Call Stack: Executes code synchronously
+                Web APIs: Handle setTimeout, DOM events, HTTP requests
+                Task Queue: Holds completed async callbacks
+                Microtask Queue: Higher priority for Promises
+
+                Async operations go to Web APIs, then callbacks queue up. The event loop moves queued tasks to the call stack only when it's empty.
+
+                <strong>Key Insight</strong>
+                Microtasks always run before regular tasks. This is why Promise.then() executes before setTimeout(0) - microtasks have priority.
+
+                <strong>Follow-up Ready</strong>
+                What if sync code blocks?
+                - It freezes the entire event loop and UI since there's only one thread. Break heavy work into chunks or use Web Workers.
+                </pre>
             </div>
         </div>
 

@@ -1,6 +1,22 @@
+const getInitialTodos = () => {
+    try {
+        return JSON.parse(localStorage.getItem('todos')) || [];
+    } catch(err) {
+        return [];
+    }
+}
+
 const App = () => {
-    const [todos, setTodos] = React.useState([])
+    const [todos, setTodos] = React.useState(getInitialTodos)
     const [todoText, setTodoText] = React.useState('')
+
+    React.useEffect(() => {
+        try {
+            localStorage.setItem('todos', JSON.stringify(todos))
+        } catch(err) {
+            console.warn('Local storage not available.')
+        }
+    },[todos])
 
     const handleAddTodo = () => {
         if(todoText.trim() === '') return
@@ -10,14 +26,8 @@ const App = () => {
 
     const handleDeleteTodo = (id) => setTodos(todos.filter(t => t.id !== id))
 
-    const handleToggleTodo = (id) => {
-        const updatedTodos = todos.map(t => {
-            if(t.id === id)
-                return {...t, completed: !t.completed}
-            
-            return t
-        })
-        setTodos(updatedTodos)
+    const handleTodoStatus = (e, id) => {
+        setTodos(todos.map(t => t.id === id ? {...t, completed: e.target.checked} : t))
     }
 
     return (
@@ -32,7 +42,7 @@ const App = () => {
                 {todos.map(({id, text, completed}) => (
                     <li className={`todo-item ${completed ? 'done' : ''}`} key={id}>
                         <label className="checkbox-label">
-                            <input type="checkbox" checked={completed} onChange={() => handleToggleTodo(id)} />
+                            <input type="checkbox" checked={completed} onChange={(e) => handleTodoStatus(e,id)} />
                             <span className="todo-text">{text}</span>
                         </label>
                         <button className="delete" onClick={() => handleDeleteTodo(id)}>Delete</button>

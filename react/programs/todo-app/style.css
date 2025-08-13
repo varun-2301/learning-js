@@ -31,20 +31,6 @@ input {
 }
 
 
-.filter-buttons {
-  margin: 1rem 0;
-}
-
-.filter-buttons button {
-  margin: 0 0.5rem;
-  padding: 0.3rem 0.8rem;
-}
-
-.filter-buttons .active {
-  background-color: black;
-  color: white;
-}
-
 .todo-list {
   list-style: none;
   padding: 0;
@@ -74,13 +60,5 @@ input {
 .todo-item.done .todo-text {
   text-decoration: line-through;
   color: gray;
-}
-
-.actions button {
-  margin-left: 0.5rem;
-  border: none;
-  background: transparent;
-  font-size: 1rem;
-  cursor: pointer;
 }
 
