@@ -92,27 +92,45 @@
             </div>
             <div class="answer">
                 <b>Shallow Copy</b>
-                    <p>
-                        When we assign an object to another object, a shallow copy is created and the both object share same address. So, change in any one object may affect the other object as well
-                        <h4>Example</h4>
-                        <pre>
-                        const original = {
-                            name: "Varun",
-                            address: {
-                                city: "Delhi"
-                            }
-                        };
+                <p>A shallow copy of an object/array means:</p>
+                <ul>
+                    <li>
+                        The top-level properties are copied.
+                    </li>
+                    <li>
+                        But if a property is itself an object/array, the reference is copied (not the actual data).
+                    </li>
+                    <li>
+                        So nested objects are shared between the original and the copy.
+                    </li>
+                </ul>
 
-                        const shallowCopy = { ...original }
-                                    OR
-                        const shallowCopy = original
-                                    OR
-                        const shallowCopy = Object.assign({}, original)
+                <h4>Example</h4>
+                <pre>
+const obj1 = {
+    name: "Alice",
+    address: {
+        city: "Delhi",
+        pin: 110001
+    }
+};
 
-                        // Modify nested property
-                        shallowCopy.address.city = "Mumbai";
+const shallowCopy = { ...obj1 }
+            OR
+const shallowCopy = obj1
+            OR
+const shallowCopy = Object.assign({}, obj1)
 
-                        console.log(original.address.city); // ❗ "Mumbai" – affected original!
+shallowCopy.name = "Bob"; // changes only obj2
+
+shallowCopy.address.city = "Mumbai"; // ⚠ affects obj1 also!
+
+console.log(obj1);
+// { name: "Alice", address: { city: "Mumbai", pin: 110001 } }
+
+console.log(shallowCopy);
+// { name: "Bob", address: { city: "Mumbai", pin: 110001 } }
+
                         </pre>
                     </p>
                 <br>
@@ -128,20 +146,128 @@
                     </ul>
                     <h4>Example</h4>
                     <pre>
-                    const original = {
-                        name: "Varun",
-                        address: {
-                            city: "Delhi"
-                        }
-                    };
+const original = {
+    name: "Varun",
+    address: {
+        city: "Delhi"
+    }
+};
 
-                    const deepCopy = JSON.parse(JSON.stringify(original));
+const deepCopy = JSON.parse(JSON.stringify(original));
+                OR
+const deepCopy = structuredClone(original); // deep copy
 
-                    deepCopy.address.city = "Mumbai";
+deepCopy.address.city = "Mumbai";
 
-                    console.log(original.address.city); // ✅ "Delhi" – original not affected
+console.log(original.address.city); // ✅ "Delhi" – original not affected
                     </pre>
                 </p>
+
+                <h4>🔑 Final Rule:</h4>
+                <ul>
+                    <li>
+                        Primitives (string, number, boolean, null, undefined, symbol, bigint) → always copied by value (safe in both shallow & deep).
+                    </li>
+                    <li>
+                        Objects/arrays/functions → copied by reference in shallow copy, cloned in deep copy.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Difference between forEach, for..of and for..in loops
+            </div>
+            <div class="answer">
+                <b>forEach</b>
+                <p>A method available on arrays. It executes a callback function once for each element.</p>
+                <ul>
+                    <li>✅ Best for: Iterating arrays when you want to run a function on each element.</li>
+                    <li>❌ Cannot break/return early (unlike for or for...of).</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+const arr = [10, 20, 30];
+
+arr.forEach((value, index) => {
+console.log(index, value);
+});
+
+// Output:
+// 0 10
+// 1 20
+// 2 30
+                </pre>
+
+                <br>
+
+                <b>for...of</b>
+                <p>Iterates over iterable objects (like arrays, strings, Sets, Maps). It gives you the values directly.</p>
+                <ul>
+                    <li>
+                        ✅ Clean way to loop through array values.
+                    </li>
+                    <li>
+                        ✅ Works on all iterables, not just arrays.
+                    </li>
+                    <li>
+                        ❌ Doesn’t give you the index (but you can use .entries() if needed).
+                    </li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+<strong>(Array):</strong>
+const arr = [10, 20, 30];
+
+for (const value of arr) {
+  console.log(value);
+}
+
+// Output:
+// 10
+// 20
+// 30
+
+<br>
+<strong>(String):</strong>
+for (const char of "Hi") {
+  console.log(char);
+}
+
+// Output:
+// H
+// i
+
+                </pre>
+            
+                <br>
+
+                <b>for...in</b>
+                <p>Iterates over enumerable property keys of an object (including inherited ones).It gives you the keys/indexes, not the values.</p>
+                <ul>
+                    <li>
+                        ✅ Best for objects (to get property names).
+                    </li>
+                    <li>
+                        ❌ Not recommended for arrays (order not guaranteed, might include prototype properties).
+                    </li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+<strong>(Object):</strong>
+const obj = { a: 1, b: 2, c: 3 };
+
+for (const key in obj) {
+  console.log(key, obj[key]);
+}
+
+// Output:
+// a 1
+// b 2
+// c 3
+
+                </pre>
             </div>
         </div>
 
@@ -154,11 +280,11 @@
                 <p>
                     <h4>Example</h4>
                     <pre>
-                    const myPromise = new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            resolve("foo");
-                        }, 300);
-                    });
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("foo");
+    }, 300);
+});
                     </pre>
                 </p>
             </div>
@@ -173,26 +299,26 @@
                 <p>
                     <h4>Example</h4>
                     <pre>
-                    const urls = ['url1', 'url2', 'url3'];
+const urls = ['url1', 'url2', 'url3'];
 
-                    function fetchData(url) {
-                        return new Promise(resolve => {
-                            setTimeout(() => resolve(`Fetched from ${url}`), 1000);
-                        });
-                    }
+function fetchData(url) {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(`Fetched from ${url}`), 1000);
+    });
+}
 
-                    urls.reduce((promiseChain, currentUrl) => {
-                        return promiseChain.then(() => fetchData(currentUrl).then(console.log));
-                    }, Promise.resolve());
+urls.reduce((promiseChain, currentUrl) => {
+    return promiseChain.then(() => fetchData(currentUrl).then(console.log));
+}, Promise.resolve());
 
 
-                    ✅ Using async/await in a loop (Recommended for readability)
-                    async function fetchInSequence() {
-                        for (let url of urls) {
-                            const data = await fetchData(url);
-                            console.log(data);
-                        }
-                    }
+✅ Using async/await in a loop (Recommended for readability)
+async function fetchInSequence() {
+    for (let url of urls) {
+        const data = await fetchData(url);
+        console.log(data);
+    }
+}
                     </pre>
                 </p>
                 <p>NOTE:
@@ -526,25 +652,42 @@
                 </ul>
 
                 <h4>Detailed Explanation</h4>
-                <pre>
                 <strong>Foundation</strong>
-                JavaScript is single-threaded with a call stack, but handles async operations through the event loop coordinating between the JS engine and runtime APIs.
+                <p>JavaScript is single-threaded with a call stack, but handles async operations through the event loop coordinating between the JS engine and runtime APIs.</p>
 
                 <strong>Components</strong>
-                Call Stack: Executes code synchronously
-                Web APIs: Handle setTimeout, DOM events, HTTP requests
-                Task Queue: Holds completed async callbacks
-                Microtask Queue: Higher priority for Promises
+                <ul>
+                    <li>
+                        Call Stack: Executes code synchronously
+                    </li>
+                    <li>
+                        Web APIs: Handle setTimeout, DOM events, HTTP requests
+                    </li>
+                    <li>
+                        Event Loop: The scheduler that pulls the next callback to run.
+                    </li>
+                    <li>
+                        Queues (multiple): <br>
+                        <ol>
+                            <li>Task / Macrotask Queue -> lower priority, bigger chunks.</li>
+                            <li>Microtask Queue -> higher priority, tiny follow-ups.</li>
+                            <li>Rendering & rAF (browser) -> animation frame callbacks.</li>
+                            <li>Idle Callbacks (browser) -> requestIdleCallback.</li>
+                            <li>Node-specific -> process.nextTick queue (even higher than microtasks), plus Node’s phase queues.</li>
+                        </ol>
+                    </li>
+                </ul>
 
-                Async operations go to Web APIs, then callbacks queue up. The event loop moves queued tasks to the call stack only when it's empty.
+                <p>Async operations go to Web APIs, then callbacks queue up. The event loop moves queued tasks to the call stack only when it's empty.</p>
 
                 <strong>Key Insight</strong>
-                Microtasks always run before regular tasks. This is why Promise.then() executes before setTimeout(0) - microtasks have priority.
+                <p>Microtasks always run before regular tasks. This is why Promise.then() executes before setTimeout(0) - microtasks have priority.</p>
 
                 <strong>Follow-up Ready</strong>
+                <p>
                 What if sync code blocks?
                 - It freezes the entire event loop and UI since there's only one thread. Break heavy work into chunks or use Web Workers.
-                </pre>
+                </p>
             </div>
         </div>
 
@@ -623,8 +766,10 @@
                 Event Propagation
             </div>
             <div class="answer">
-                <li>The process of deciding in which direction and when the events will move forward i.e. from top to bottom or bottom to top is called Event Propagation</li>
-                <li>Its example are Event Bubbling and Event Capturing</li>
+                <ul>
+                    <li>The process of deciding in which direction and when the events will move forward i.e. from top to bottom or bottom to top is called Event Propagation</li>
+                    <li>Its example are Event Bubbling and Event Capturing</li>
+                </ul>
             </div>
         </div>
 
@@ -658,7 +803,7 @@
             <div class="answer">
                 <ul>
                     <li>A generator function allows you to pause and resume function execution using the yield keyword</li>
-                    <li>Calling a generator function doesn’t run it immediately</li>
+                    <li>Calling a generator function does not run it immediately</li>
                     <li>It returns an iterator object, and you use .next() to execute step by step</li>
                     <li>Each time you call .next(), it runs the function until it hits a yield statement, returning the yielded value</li>
                     <li>When the function completes, .next() returns { value: undefined, done: true }</li>
@@ -805,60 +950,6 @@
 
         <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
-                Suppose we have 2 components A and B. Both are independent of each other. Now, in component A a button is 
-                clicked. Simultaneously we would want to to trigger a method in component B when that button is clicked 
-                in A. we cannot use Redux or Context API. What are the other ways to achieve this?
-            </div>
-            <div class="answer">
-                <ul>
-                    <li>We can use custom events to achieve this</li>
-                    <li>We can create a custom event in component A and dispatch it</li>
-                    <li>In component B, we can listen for that custom event and trigger the method accordingly</li>
-                </ul>
-                <h4>Example</h4>
-                <pre>
-                // eventBus.js
-                import { EventEmitter } from 'events';
-                const eventBus = new EventEmitter();
-                export default eventBus;
-
-
-                // In Component A
-                import eventBus from './eventBus';
-
-                const ComponentA = () => {
-                    const handleClick = () => {
-                        eventBus.emit('buttonClicked');
-                    };
-
-                    return Component A;
-                };
-
-                // In Component B
-                import { useEffect } from 'react';
-                import eventBus from './eventBus';
-
-                const ComponentB = () => {
-                    useEffect(() => {
-                        const listener = () => {
-                        console.log('Button clicked in A — trigger method in B');
-                        // your logic
-                        };
-
-                        eventBus.on('buttonClicked', listener);
-
-                        return () => eventBus.off('buttonClicked', listener); // Cleanup
-                    }, []);
-
-                    return Component B;
-                };
-
-                </pre>
-            </div>
-        </div>
-
-        <div class="qa-item">
-            <div class="question" onclick="toggleAnswer(this)">
                 Pipe & Compose
             </div>
             <div class="answer">
@@ -872,26 +963,26 @@
 
                     <h4>Example</h4>
                     <pre>
-                    const add = x => x + 1;
-                    const multiply = x => x * 2;
-                    const subtract = x => x - 3;
+const add = x => x + 1;
+const multiply = x => x * 2;
+const subtract = x => x - 3;
 
-                    // Using pipe
-                    const pipe = (...fns) => input => fns.reduce((acc, fn) => fn(acc), input);
-                    const pipeResult = pipe(add, multiply, subtract)(5); // ((5 + 1) * 2) - 3 = 9
+// Using pipe
+const pipe = (...fns) => input => fns.reduce((acc, fn) => fn(acc), input);
+const pipeResult = pipe(add, multiply, subtract)(5); // ((5 + 1) * 2) - 3 = 9
 
-                    // Using compose
-                    const compose = (...fns) => input => fns.reduceRight((acc, fn) => fn(acc), input);
-                    const composeResult = compose(add, multiply, subtract)(5); // (5 - 3) * 2 + 1 = 9
+// Using compose
+const compose = (...fns) => input => fns.reduceRight((acc, fn) => fn(acc), input);
+const composeResult = compose(add, multiply, subtract)(5); // (5 - 3) * 2 + 1 = 9
 
-                    // Simple explanation:
-                    const compose = (...fns) => {
-                        return function(input) {
-                            return fns.reduce(function(acc, fn) {
-                                return fn(acc); // apply current function to result of previous
-                            }, input) // start with initial input
-                        }
-                    }
+// Simple explanation:
+const compose = (...fns) => {
+    return function(input) {
+        return fns.reduce(function(acc, fn) {
+            return fn(acc); // apply current function to result of previous
+        }, input) // start with initial input
+    }
+}
                     </pre>
                 </p>
             </div>

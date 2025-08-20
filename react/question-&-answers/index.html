@@ -85,6 +85,10 @@
         table> thead > tr > th {
             text-align: left;
         }
+        tr, th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -203,51 +207,51 @@
 
                 <h4>Example</h4>
                 <pre>
-                // CounterContext.js
-                import { createContext, useContext, useState } from "react";
+// CounterContext.js
+import { createContext, useContext, useState } from "react";
 
-                const CounterContext = createContext();
+const CounterContext = createContext();
 
-                export const CounterProvider = ({ children }) => {
-                    const [count, setCount] = useState(0);
+export const CounterProvider = ({ children }) => {
+    const [count, setCount] = useState(0);
 
-                    const increment = () => setCount((prev) => prev + 1);
-                    const decrement = () => setCount((prev) => prev - 1);
+    const increment = () => setCount((prev) => prev + 1);
+    const decrement = () => setCount((prev) => prev - 1);
 
-                    return (
-                        <CounterContext.Provider value={{ count, increment, decrement }}>
-                        {children}
-                        </CounterContext.Provider>
-                    );
-                };
+    return (
+        &lt;CounterContext.Provider value={{ count, increment, decrement }}&gt;
+            {children}
+        &lt;/CounterContext.Provider&gt;
+    )
+}
 
-                export const useCounter = () => useContext(CounterContext);
+export const useCounter = () => useContext(CounterContext);
 
 
-                // main.jsx or index.js
-                import React from "react";
-                import ReactDOM from "react-dom/client";
-                import App from "./App";
-                import { CounterProvider } from "./CounterContext";
+// main.jsx or index.js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { CounterProvider } from "./CounterContext";
 
-                ReactDOM.createRoot(document.getElementById("root")).render(<CounterProvider><App /></CounterProvider>);
+ReactDOM.createRoot(document.getElementById("root")).render(&lt;CounterProvider&gt;&lt;App /&gt;&lt;/CounterProvider&gt;)
 
-                // CounterButtons.jsx
-                import React from "react";
-                import { useCounter } from "./CounterContext";
+// CounterButtons.jsx
+import React from "react";
+import { useCounter } from "./CounterContext";
 
-                const CounterButtons = () => {
-                    const { increment, decrement } = useCounter();
+const CounterButtons = () => {
+    const { increment, decrement } = useCounter();
 
-                    return (
-                        <div>
-                            <button onClick={increment}>Increment</button>
-                            <button onClick={decrement}>Decrement</button>
-                        </div>
-                    );
-                };
+    return (
+        <div>
+            &lt;button onClick={increment}&gt;Increment&lt;/button&gt;
+            &lt;button onClick={decrement}&gt;Decrement&lt;/button&gt;
+        </div>
+    )
+}
 
-                export default CounterButtons;
+export default CounterButtons
                 </pre>
             </div>
         </div>
@@ -300,13 +304,13 @@
                 </ul>
 
                 <pre>
-                Render Phase
-                |
-                |-- useLayoutEffect (sync)
-                |
-                |-- Browser Paint
-                |
-                |-- useEffect (async)
+Render Phase
+|
+|-- useLayoutEffect (sync)
+|
+|-- Browser Paint
+|
+|-- useEffect (async)
                 </pre>
             </div>
         </div>
@@ -325,30 +329,30 @@
                     <li>You see "Loading..." until the actual component loads.</li>
                 </ul>
                 <pre>
-                import React, { lazy, Suspense } from 'react';
-                import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-                const Home = lazy(() => import('./components/Home'));
-                const About = lazy(() => import('./components/About'));
+const Home = lazy(() => import('./components/Home'));
+const About = lazy(() => import('./components/About'));
 
-                function App() {
-                    return (
-                        <Router>
-                            <nav>
-                                <Link to="/">Home</Link>
-                                <Link to="/about">About</Link>
-                            </nav>
+function App() {
+    return (
+        &lt;Router&gt;
+            &lt;nav&gt;
+                &lt;Link to="/"&gt;Home&lt;/Link&gt;
+                &lt;Link to="/about"&gt;About&lt;/Link&gt;
+            &lt;/nav&gt;
 
-                            {/* Suspense shows fallback until the component is loaded */}
-                            <Suspense fallback="Loading...">
-                                <Routes>
-                                <Route path="/" element="Home Component" />
-                                <Route path="/about" element="About Component" />
-                                </Routes>
-                            </Suspense>
-                        </Router>
-                    );
-                }
+            {/* Suspense shows fallback until the component is loaded */}
+            &lt;Suspense fallback="Loading..."&gt;
+                &lt;Routes&gt;
+                &lt;Route path="/" element="Home Component" /&gt;
+                &lt;Route path="/about" element="About Component" /&gt;
+                &lt;/Routes&gt;
+            &lt;/Suspense&gt;
+        &lt;/Router&gt;
+    );
+}
                 </pre>
 
                 <h4>2. Lazy Load Components on Scroll (Using IntersectionObserver)</h4>
@@ -358,45 +362,45 @@
                     <li>You see "Loading..." until the actual component loads.</li>
                 </ul>
                 <pre>
-                // LazyComponentWrapper.js
-                import React, { useRef, useState, useEffect } from 'react';
+// LazyComponentWrapper.js
+import React, { useRef, useState, useEffect } from 'react';
 
-                export default function LazyComponentWrapper({ children }) {
-                    const ref = useRef();
-                    const [isVisible, setVisible] = useState(false);
+export default function LazyComponentWrapper({ children }) {
+    const ref = useRef();
+    const [isVisible, setVisible] = useState(false);
 
-                    useEffect(() => {
-                        const observer = new IntersectionObserver(([entry]) => {
-                        if (entry.isIntersecting) setVisible(true);
-                        });
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+        });
 
-                        if (ref.current) observer.observe(ref.current);
-                        return () => observer.disconnect();
-                    }, []);
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
 
-                    return <div ref={ref}>{isVisible ? children : null}</div>;
-                }
+    return &lt;div ref={ref}&gt;{isVisible ? children : null}&lt;/div&gt;
+}
 
 
-                // App.js
-                import React, { lazy, Suspense } from 'react';
-                import LazyComponentWrapper from './LazyComponentWrapper';
+// App.js
+import React, { lazy, Suspense } from 'react';
+import LazyComponentWrapper from './LazyComponentWrapper';
 
-                const Footer = lazy(() => import('./components/Footer'));
+const Footer = lazy(() => import('./components/Footer'));
 
-                function App() {
-                    return (
-                        <div>
-                            <h1>Scroll down to load footer...</h1>
+function App() {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;Scroll down to load footer...&lt;/h1&gt;
 
-                            <LazyComponentWrapper>
-                                <Suspense fallback="Loading footer...">
-                                    <Footer></Footer>
-                                </Suspense>
-                            </LazyComponentWrapper>
-                        </div>
-                    );
-                }
+            &lt;LazyComponentWrapper&gt;
+                &lt;Suspense fallback="Loading footer..."&gt;
+                    &lt;Footer&gt;&lt;/Footer&gt;
+                &lt;/Suspense&gt;
+            &lt;/LazyComponentWrapper&gt;
+        &lt;/div&gt;
+    )
+}
                 </pre>
 
                 <h4>3. React Router Lazy Routes (React 18+)</h4>
@@ -406,20 +410,20 @@
                     <li>You see "Loading..." until the actual component loads.</li>
                 </ul>
                 <pre>
-                import { createBrowserRouter, RouterProvider, lazyRoute } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, lazyRoute } from 'react-router-dom';
 
-                const router = createBrowserRouter([
-                    {
-                        path: '/',
-                        lazy: () => import('./routes/Home'),
-                    },
-                    {
-                        path: '/about',
-                        lazy: () => import('./routes/About'),
-                    }
-                ]);
+const router = createBrowserRouter([
+    {
+        path: '/',
+        lazy: () => import('./routes/Home'),
+    },
+    {
+        path: '/about',
+        lazy: () => import('./routes/About'),
+    }
+]);
 
-                <RouterProvider router={router} />
+&lt;RouterProvider router={router} /&gt;
                 </pre>
             </div>
         </div>
@@ -469,17 +473,17 @@
                     <li>inputRef.current does not cause re-renders when changed.</li>
                 </ul>
                 <pre>
-                import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react'
 
-                function InputFocus() {
-                    const inputRef = useRef(null);
+function InputFocus() {
+    const inputRef = useRef(null);
 
-                    useEffect(() => {
-                        inputRef.current.focus(); // auto-focus the input
-                    }, []);
+    useEffect(() => {
+        inputRef.current.focus(); // auto-focus the input
+    }, []);
 
-                    return <input ref={inputRef} />
-                }
+    return &lt;input ref={inputRef} /&gt;
+}
                 </pre>
 
                 <h4>🧩 Practical Examples of createRef</h4>
@@ -488,22 +492,22 @@
                     <li>Creates a new ref object on each render if used inside a function component.</li>
                 </ul>
                 <pre>
-                import React, { Component, createRef } from 'react';
+import React, { Component, createRef } from 'react';
 
-                class MyComponent extends Component {
-                    constructor() {
-                        super();
-                        this.inputRef = createRef();
-                    }
+class MyComponent extends Component {
+    constructor() {
+        super();
+        this.inputRef = createRef();
+    }
 
-                    componentDidMount() {
-                        this.inputRef.current.focus();
-                    }
+    componentDidMount() {
+        this.inputRef.current.focus();
+    }
 
-                    render() {
-                        return <input ref={this.inputRef} />;
-                    }
-                }
+    render() {
+        return &lt;input ref={this.inputRef} /&gt;
+    }
+}
                 </pre>
             </div>
         </div>
@@ -781,6 +785,61 @@
                     <li>Test your application thoroughly to catch any hydration issues early in development.</li>
                 </ul>
             </div>
+        </div>
+
+                <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Suppose we have 2 components A and B. Both are independent of each other. Now, in component A a button is 
+                clicked. Simultaneously we would want to to trigger a method in component B when that button is clicked 
+                in A. we cannot use Redux or Context API. What are the other ways to achieve this?
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>We can use custom events to achieve this</li>
+                    <li>We can create a custom event in component A and dispatch it</li>
+                    <li>In component B, we can listen for that custom event and trigger the method accordingly</li>
+                </ul>
+                <h4>Example</h4>
+                <pre>
+                // eventBus.js
+                import { EventEmitter } from 'events';
+                const eventBus = new EventEmitter();
+                export default eventBus;
+
+
+                // In Component A
+                import eventBus from './eventBus';
+
+                const ComponentA = () => {
+                    const handleClick = () => {
+                        eventBus.emit('buttonClicked');
+                    };
+
+                    return Component A;
+                };
+
+                // In Component B
+                import { useEffect } from 'react';
+                import eventBus from './eventBus';
+
+                const ComponentB = () => {
+                    useEffect(() => {
+                        const listener = () => {
+                        console.log('Button clicked in A — trigger method in B');
+                        // your logic
+                        };
+
+                        eventBus.on('buttonClicked', listener);
+
+                        return () => eventBus.off('buttonClicked', listener); // Cleanup
+                    }, []);
+
+                    return Component B;
+                };
+
+                </pre>
+            </div>
+        </div>
     </div>
 
 

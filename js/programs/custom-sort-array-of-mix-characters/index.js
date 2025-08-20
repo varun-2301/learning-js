@@ -17,7 +17,7 @@ function customSortArray(array){
         else if(typeof item === 'number')
             numArr.push(item)
     }
-strArr
+
     const sortedStrArr = sortArray(strArr)
     const sortedNumArr = sortArray(numArr)
     return [...sortedStrArr, ...sortedNumArr]

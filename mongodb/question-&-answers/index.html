@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="../js.png">
+        <title>MONGODB Q&A</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #f9f9f9;
+                padding: 20px;
+            }
+
+            .qa-container {
+                max-width: 800px;
+                margin: auto;
+            }
+
+            .qa-item {
+                margin-bottom: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                background-color: #fff;
+                transition: all 0.3s ease;
+            }
+
+            .question {
+                padding: 15px 20px;
+                background-color: #007BFF;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .question:hover {
+                background-color: #0056b3;
+            }
+
+            .question::after {
+                content: '+';
+                font-size: 18px;
+                transition: transform 0.3s ease;
+            }
+
+            .question.active::after {
+                content: '−';
+            }
+
+            .answer {
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 20px;
+                background-color: #f4f4f4;
+                transition: max-height 0.5s ease, padding 0.3s ease;
+            }
+
+            .answer.show {
+                max-height: 500px; /* Enough for most answers */
+                padding: 15px 20px;
+                overflow-y: auto;
+            }
+            .answer ul {
+                list-style-type: disc;
+                padding-left: 20px;
+            }
+            .answer ul> li {
+                margin-bottom: 10px;
+                
+            }
+            .answer h4 {
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+            .answer pre {
+                background-color: #e8e8e8;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+            table> thead > tr > th {
+                text-align: left;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="qa-container">
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is MongoDB, and how is it different from relational databases like MySQL or PostgreSQL?
+                </div>
+                <div class="answer">
+                    MongoDB is a NoSQL, open-source, document-oriented database that stores data in a flexible, JSON-like format
+                    <p>
+                        <h4>Key Differences</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Features</th>
+                                    <th>MongoDB</th>
+                                    <th>MySQL/PostgreSQL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Data Model</td>
+                                    <td>Document-oriented (JSON-like)</td>
+                                    <td>Table-oriented (rows & columns)</td>
+                                </tr>
+                                <tr>
+                                    <td>Schema</td>
+                                    <td>Schema-less (fields can vary from document to document)</td>
+                                    <td>Fixed schema (all rows must follow the same structure)</td>
+                                </tr>
+                                <tr>
+                                    <td>Data Storage</td>
+                                    <td>BSON documents in collections</td>
+                                    <td>Rows in tables</td>
+                                </tr>
+                                <tr>
+                                    <td>Joins</td>
+                                    <td>Limited join support (via $lookup)</td>
+                                    <td>Full join operations (INNER, LEFT, RIGHT, etc.)</td>
+                                </tr>
+                                <tr>
+                                    <td>Scaling</td>
+                                    <td>Horizontal scaling (sharding)</td>
+                                    <td>Mostly vertical scaling (replication & partitioning possible)</td>
+                                </tr>
+                                <tr>
+                                    <td>Transactions</td>
+                                    <td>Supports multi-document ACID transactions (since MongoDB 4.0)</td>
+                                    <td>Full ACID compliance from the start</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+
+                    <h4>NOTE:</h4>
+                    <ul>
+                        <li>In MySQL: users table → each row has id, name, email, etc.</li>
+                        <li>In MongoDB: users collection → each document can have different fields. One document may have "phone", another may not.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Explain the concept of a document in MongoDB.
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>A document in MongoDB is the basic unit of data.</li>
+                        <li>It is stored in BSON format (Binary JSON) and is similar to a JSON object.</li>
+                        <li>Think of a document like a row in MySQL, but more flexible — it can have nested data and arrays.</li>
+                    </ul>
+                    <h4>Example</h4>
+                    <pre>
+{
+    "_id": ObjectId("64c34f3f1a3b5e4567abc123"),
+    "name": "Alice",
+    "email": "alice@example.com",
+    "age": 28,
+    "skills": ["JavaScript", "MongoDB", "Node.js"],
+    "address": {
+        "city": "Delhi",
+        "country": "India"
+    }
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is a collection in MongoDB?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>A collection is a group of MongoDB documents, similar to a table in RDBMS.</li>
+                        <li>Collections do not enforce a fixed schema</li>
+                        <li>Documents in the same collection can have different fields.</li>
+                    </ul>
+                    
+                    <h4>Example</h4>
+                    <pre>
+{ "name": "Alice", "email": "alice@example.com" }
+{ "name": "Bob", "age": 30, "skills": ["Node.js", "React"] }
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are BSON and JSON, and how are they related in MongoDB?
+                </div>
+                <div class="answer">
+                    <h4>JSON (JavaScript Object Notation): </h4>
+                    <p>A human-readable text format for storing structured data.</p>
+
+                    <h4>BSON (Binary JSON): </h4>
+                    <ul>
+                        <li>A binary-encoded format used by MongoDB for storage and network transfer</li>
+                        <li>Supports all JSON types.</li>
+                        <li>Adds extra types not in JSON (like Date, ObjectId, Decimal128).</li>
+                        <li>Faster for parsing and more efficient in storage.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What does the $set operator do?
+                </div>
+                <div class="answer">
+                    <p>The $set operator is used to update (or add if missing) specific fields in a document without replacing the whole document.</p>
+
+                    <h4>Example: </h4>
+                    <pre>
+db.users.updateOne(
+    { name: "Bob" },
+    { $set: { city: "Delhi" } }
+);
+                    </pre>
+                    <p><strong>NOTE:</strong>
+                        Without $set, MongoDB would replace the entire document.
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you use query operators like $gt, $lt, $in, $or in MongoDB queries?
+                </div>
+                <div class="answer">
+                    <p>
+                        <h4>Key Differences</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Operator</th>
+                                    <th>Meaning</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>$gt</td>
+                                    <td>Greater than</td>
+                                    <td>{ age: { $gt: 25 } } → age > 25</td>
+                                </tr>
+                                <tr>
+                                    <td>$lt</td>
+                                    <td>Less than</td>
+                                    <td>{ age: { $lt: 30 } } → age < 30</td>
+                                </tr>
+                                <tr>
+                                    <td>$in</td>
+                                    <td>Matches any value in array</td>
+                                    <td>{ city: { $in: ["Delhi", "Mumbai"] } }</td>
+                                </tr>
+                                <tr>
+                                    <td>$or</td>
+                                    <td>OR condition</td>
+                                    <td>{ $or: [ { age: 25 }, { city: "Delhi" } ] }</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is an index in MongoDB, and why is it important?
+                </div>
+                <div class="answer">
+                    <p>
+                        An index in MongoDB is a special data structure that stores a small portion of the collection’s data in a way that makes searching faster.
+                    </p>
+                    <ul>
+                        <li>By default, MongoDB creates an index on _id for every collection.</li>
+                        <li>Without an index → MongoDB does a collection scan (checks every document).</li>
+                        <li>With an index → MongoDB can directly look up matching documents.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+                    <pre>
+// Create an index on 'age' field
+db.users.createIndex({ age: 1 });
+
+// Query is now faster
+db.users.find({ age: 25 });
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are the types of indexes supported in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>
+                        MongoDB supports several index types:
+                    </p>
+                    
+                    <pre>
+1. <b>Single-field index</b> → Index on one field.
+    db.users.createIndex({ age: 1 });
+
+2. <b>Compound index</b> → Index on multiple fields (order matters).
+    db.users.createIndex({ age: 1, city: -1 });
+
+3. <b>Multikey index</b> → Index on array fields (each element is indexed).
+    db.users.createIndex({ skills: 1 }); //{ skills: ["Node.js", "MongoDB"] }
+
+4. <b>Text index</b> → For full-text search (words, phrases).
+    db.articles.createIndex({ content: "text" });
+
+5. <b>Hashed index</b> → Indexes hashed values (useful for sharding).
+    db.users.createIndex({ email: "hashed" });
+
+6. <b>Geospatial index</b> → For location-based queries (2d, 2dsphere).
+    db.places.createIndex({ location: "2dsphere" });
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How does compound indexing work?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>A compound index is an index on multiple fields.</li>
+                        <li>The order matters → the index { age: 1, city: 1 } can be used for queries starting with age, but not for queries that only filter on city.</li>
+                    </ul>
+                    
+                    <h4>Example:</h4>
+                    <pre>
+db.users.createIndex({ age: 1, city: 1 });
+
+This index supports queries like:
+{ age: 25 }
+{ age: 25, city: "Delhi" }
+{ age: { $gt: 20 }, city: "Mumbai" }
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is a text index, and how do you create one?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>A text index allows searching for words and phrases in string fields.</li>
+                        <li>Only one text index per collection</li>
+                        <li>When you use a text index in MongoDB, the database doesn’t just do a literal string match — it applies natural language processing (NLP) techniques behind the scenes:</li>
+                            <strong>Stemming:</strong>
+                            <p>MongoDB reduces words to their root form so that variations of a word match the same way.</p>
+                            <h4>Example:</h4>
+                            <pre>
+If your document has "running" and you search for "run", it will match.
+
+"developer" and "developing" both stem to "develop".
+                            </pre>
+
+                            <strong>Stop words:</strong>
+                            <p>Common words like "the", "a", "is", "and" are ignored in text searches because they don’t add much meaning.</p>
+                            <h4>Example:</h4>
+                            <pre>
+Searching for "the best database" is treated more like "best database".
+                            </pre>
+                        
+                    </ul>
+                    
+                    <h4>Text Index Example:</h4>
+                    <pre>
+db.articles.createIndex({ content: "text" });
+
+// Search documents containing "mongodb"
+db.articles.find({ $text: { $search: "mongodb" } });
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is an index cardinality?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Index cardinality = Number of unique values in an indexed field.</li>
+                        <li>High cardinality → Many unique values (e.g., email).</li>
+                        <li>Low cardinality → Few unique values (e.g., gender → "M" / "F").</li>
+                        <li>Indexes are most effective on high-cardinality fields.</li>
+                        <li>Indexing low-cardinality fields often doesn’t improve performance.</li>
+                    </ul>
+
+                    <h4>📌 Example:</h4>
+                    <pre>
+Index on email (high cardinality) → very useful.
+
+Index on gender (low cardinality) → not very useful.
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is the explain plan, and how do you use it to optimize queries?
+                </div>
+                <div class="answer">
+                    <p>The explain plan shows how MongoDB executes a query — whether it used an index or did a full collection scan.</p>
+
+                    <h4>📌 Example:</h4>
+                    <pre>
+db.users.find({ age: 25 }).explain("executionStats");
+                    </pre>
+
+                    <h4>Key parts of the output:</h4>
+                    <ul>
+                        <li>"COLLSCAN" → Collection scan (slow).</li>
+                        <li>"IXSCAN" → Index scan (fast).</li>
+                        <li>"executionTimeMillis" → Time taken.</li>
+                    </ul>
+                    <p>
+                        Use explain plans to check if queries are using indexes effectively.
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is the aggregation pipeline in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>The aggregation pipeline in MongoDB is a framework for data aggregation and transformation</p>
+
+                    <ul>
+                        <li>It processes documents in a collection through a sequence of stages.</li>
+                        <li>Each stage transforms the documents and passes the results to the next stage.</li>
+                        <li>Similar to SQL’s GROUP BY, JOIN, ORDER BY, etc., but in a pipeline form.</li>
+                    </ul>
+                    <p>
+                        Think of it like a factory assembly line → raw data goes in, each stage modifies it, and at the end you get the desired output.
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Explain the difference between aggregate() and find().
+                </div>
+                <div class="answer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Features</th>
+                                <th>find()</th>
+                                <th>aggregate()</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Purpose</td>
+                                <td>Retrieve documents (simple queries)</td>
+                                <td>Perform complex transformations & analytics</td>
+                            </tr>
+                            <tr>
+                                <td>Operations</td>
+                                <td>Filtering, projection, sorting</td>
+                                <td>Filtering, grouping, joining, calculations, reshaping</td>
+                            </tr>
+                            <tr>
+                                <td>Output</td>
+                                <td>Raw documents</td>
+                                <td>Transformed/aggregated documents</td>
+                            </tr>
+                            <tr>
+                                <td>Example</td>
+                                <td><code>db.orders.find({ status: "completed" })</code></td>
+                                <td><code>db.orders.aggregate([{$group: { _id: "$customerId", total: { $sum: "$amount" } } }])</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>💡 Rule of thumb:</h4>
+                    <ul>
+                        <li>
+                            Use find() for simple queries.
+                        </li>
+                        <li>
+                            Use aggregate() when you need grouping, joining, calculations, or analytics.
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are common aggregation stages like $match, $group, $sort, $project, $lookup, $unwind?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>
+                            1. $match → Filters documents (like WHERE in SQL).
+                            <pre>{ $match: { status: "completed" } }</pre>
+                        </li>
+                        <li>
+                            2. $group → Groups documents by a field and performs aggregations (like GROUP BY).
+                            <pre>{ $group: { _id: "$customerId", totalAmount: { $sum: "$amount" } } }</pre>
+                        </li>
+                        <li>
+                            3. $sort → Sorts documents.
+                            <pre>{ $sort: { totalAmount: -1 } } // descending</pre>
+                        </li>
+                        <li>
+                            4. $project → Selects/re-shapes fields (like SELECT ...)
+                            <pre>{ $project: { customerId: 1, totalAmount: 1, _id: 0 } }</pre>
+                        </li>
+                        <li>
+                            5. $lookup → Performs a left outer join with another collection.
+                            <pre>
+{ 
+    $lookup: {
+        from: "customers",        // collection to join
+        localField: "customerId", // field in current collection
+        foreignField: "_id",      // field in joined collection
+        as: "customerInfo"        // output array field
+    }
+}
+                            </pre>
+                        </li>
+                        <li>
+                            6. $unwind → Deconstructs an array field into multiple documents (like flattening).
+                            <pre>{ $unwind: "$items" }</pre>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you join two collections in MongoDB? ($lookup)
+                </div>
+                <div class="answer">
+                    <p>
+                        MongoDB doesn’t have joins like SQL, but $lookup stage allows you to combine documents from different collections.
+                    </p>
+
+                    <h4>📌 Example:</h4>
+                    <pre>
+<h3>orders collection</h3>
+{ "_id": 1, "customerId": 101, "amount": 500 }
+{ "_id": 2, "customerId": 102, "amount": 300 }
+
+<h3>customers collection</h3>
+{ "_id": 101, "name": "Alice" }
+{ "_id": 102, "name": "Bob" }
+
+<h3>Aggregation query:</h3>
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",        // collection to join
+      localField: "customerId", // field in orders
+      foreignField: "_id",      // field in customers
+      as: "customerInfo"        // alias for joined docs
+    }
+  }
+]);
+
+<h3>Output:</h3>
+{
+  "_id": 1,
+  "customerId": 101,
+  "amount": 500,
+  "customerInfo": [ { "_id": 101, "name": "Alice" } ]
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Write an aggregation query to count the number of orders per customer.
+                </div>
+                <div class="answer">
+                    <pre>
+<h3>Suppose you have orders collection:</h3>
+{ "_id": 1, "customerId": 101, "amount": 500 }
+{ "_id": 2, "customerId": 102, "amount": 300 }
+
+<h3>Aggregation query:</h3>
+db.orders.aggregate([
+    {
+        $group: {
+            _id: "$customerId",        // group by customerId
+            orderCount: { $sum: 1 }    // count orders
+        }
+    },
+    {
+        $sort: { orderCount: -1 }    // sort by order count desc
+    }
+]);
+
+<h3>Output:</h3>
+{ "_id": 101, "orderCount": 2 }
+{ "_id": 102, "orderCount": 1 }
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you design a schema in MongoDB?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Unlike relational databases (MySQL/PostgreSQL) which are schema-first (tables, fixed columns, strict types), MongoDB is schema-flexible</li>
+                        <li>Schema design depends on how your application queries and updates data</li>
+                        <li>General guidelines:</li>
+                            <p>Understand the query patterns first (read-heavy, write-heavy, analytical).</p>
+                            <p>Choose between embedding vs. referencing based on relationships.</p>
+                            <p>Use indexes for fast query access.</p>
+                            <p>Consider document size limits (16MB max per document).</p>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is the difference between embedding and referencing documents?
+                </div>
+                <div class="answer">
+                    <h4>Embedding (Denormalization)</h4>
+                    <p>Store related data in the same document (nested objects/arrays).</p>
+
+                    <h4>Example:</h4>
+                    <pre>
+{
+    _id: 1,
+    name: "Alice",
+    orders: [
+        { orderId: 101, product: "Laptop", price: 1000 },
+        { orderId: 102, product: "Phone", price: 500 }
+    ]
+}
+                    </pre>
+                    <p>✅ Pros: Fast reads, single query, simple structure.</p>
+                    <p>❌ Cons: Document size can grow very large, duplicates data.</p>
+
+                    <hr>
+                    <h4>Referencing (Normalization)</h4>
+                    <p>Store related data in different collections, connect with _id.</p>
+
+                    <h4>Example:</h4>
+                    <pre>
+// users
+{ _id: 1, name: "Alice" }
+
+// orders
+{ _id: 101, userId: 1, product: "Laptop", price: 1000 }
+                    </pre>
+                    <p>✅ Pros: No large documents, avoids duplication, flexible.</p>
+                    <p>❌ Cons: Requires $lookup (join) or multiple queries.</p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    When should you embed vs. reference?
+                </div>
+                <div class="answer">
+                    <h4>Embed when:</h4>
+                    <ul>
+                        <li>
+                            Data is accessed together most of the time.
+                        </li>
+                        <li>
+                            Relationship is one-to-few (e.g., blog post with comments).
+                        </li>
+                        <li>
+                            Document size won’t grow beyond MongoDB’s 16MB limit.
+                        </li>
+                    </ul>
+
+                    <h4>Reference when:</h4>
+                    <ul>
+                        <li>
+                            Relationship is one-to-many or many-to-many.
+                        </li>
+                        <li>
+                            Data is large or frequently updated separately.
+                        </li>
+                        <li>
+                            You don’t always need the related data in queries.
+                        </li>
+                    </ul>
+
+                    <h4>👉 Rule of thumb:</h4>
+                    Embed for performance (fast reads), Reference for flexibility (avoid duplication).
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are the advantages of a denormalized schema in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>Denormalization = storing related data in the same document.</p>
+                    <ul>
+                        <li>
+                            <strong>Fewer queries</strong> → Data is retrieved in one go.
+                        </li>
+                        <li>
+                            <strong>Better read performance</strong> → No joins required.
+                        </li>
+                        <li>
+                            <strong>Simpler queries</strong> → No need for multiple collections lookups.
+                        </li>
+                        <li>
+                            Fits MongoDB’s document model naturally.
+                        </li>
+                    </ul>
+
+                    <h4>Example</h4>
+                    <pre>
+Instead of joining users and addresses, store address inside user:
+
+{
+    name: "Alice",
+    email: "alice@gmail.com",
+    address: { city: "Delhi", country: "India" }
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are the advantages of a denormalized schema in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>Denormalization = storing related data in the same document.</p>
+                    
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <script>
+            document.querySelectorAll('.question').forEach((question) => {
+                question.addEventListener('click', () => {
+                    // Optional: close all others (accordion effect)
+                    document.querySelectorAll('.question').forEach(q => {
+                        if (q !== question) q.classList.remove('active');
+                    });
+
+                    document.querySelectorAll('.answer').forEach(a => {
+                        if (a !== question.nextElementSibling) a.classList.remove('show');
+                    });
+
+                    // Toggle current
+                    question.classList.toggle('active');
+                    const answer = question.nextElementSibling;
+                    answer.classList.toggle('show');
+                });
+            });
+        </script>
+    </body>
+</html>
