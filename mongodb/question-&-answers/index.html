@@ -750,14 +750,281 @@ Instead of joining users and addresses, store address inside user:
 
             <div class="qa-item">
                 <div class="question" onclick="toggleAnswer(this)">
-                    What are the advantages of a denormalized schema in MongoDB?
+                    Does MongoDB support ACID transactions? If yes, from which version?
                 </div>
                 <div class="answer">
-                    <p>Denormalization = storing related data in the same document.</p>
-                    
+                    <p>Yes, MongoDB supports ACID transactions.</p>
+                    <ul>
+                        <li>ACID → Atomicity, Consistency, Isolation, Durability.</li>
+                        <li>Transactions allow multiple operations across multiple documents/collections to be executed as a single unit (all succeed or all fail).</li>
+                        <li>MongoDB 4.0 → Multi-document transactions in replica sets.</li>
+                        <li>MongoDB 4.2 → Transactions extended to sharded clusters.</li>
+                    </ul>
                 </div>
             </div>
 
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you start a multi-document transaction in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>To use transactions</p>
+                    <ul>
+                        <li>Start a session</li>
+                        <li>Start a transaction</li>
+                        <li>Run operations inside the transaction.</li>
+                        <li>Commit or abort.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+                    <pre>
+// Start a session
+const session = db.getMongo().startSession();
+
+// Start transaction
+session.startTransaction();
+
+try {
+    const usersCollection = session.getDatabase("test").users;
+    const ordersCollection = session.getDatabase("test").orders;
+
+    // Multiple operations
+    usersCollection.updateOne(
+        { _id: 1 },
+        { $inc: { balance: -100 } }
+    );
+    ordersCollection.insertOne(
+        { orderId: 101, userId: 1, amount: 100 }
+    );
+
+    // Commit transaction
+    session.commitTransaction();
+} catch (e) {
+    // Rollback
+    session.abortTransaction();
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Explain replica sets and sharding in MongoDB.
+                </div>
+                <div class="answer">
+                    <h3>Sharding</h3>
+                    <ul>
+                        <li>Splitting a big collection of data into smaller pieces and storing them across multiple servers (shards).</li>
+                        <li>Each shard only holds a portion of the data.</li>
+                        <li>Together, they make up the whole database.</li>
+                    </ul>
+
+                    <h4>🔑 Components of Sharding in MongoDB:</h4>
+                    <ul>
+                        <li>
+                            Shard - The actual database server that stores some portion of your data. (like a notebook)
+                        </li>
+                        <li>
+                            Config Server - Stores the "map" (metadata) of where each piece of data lives. (like an index telling you which notebook has which info)
+                        </li>
+                        <li>
+                            Query Router (mongos) - The middleman. When you ask for some data, it looks at the config server and directs your query to the correct shard(s). (like an assistant who fetches the right notebook for you)
+                        </li>
+                        <li>
+                            Shard Key - A specific field in your documents that determines how data is distributed across shards. (like a label on each notebook that helps the assistant know where to find it)
+                            <h4>Example</h4>
+                            <p>If you have a users collection and choose "userId" as the shard key, all documents with userId 1 might go to Shard A, userId 2 to Shard B, and so on.</p>
+                        </li>
+                    </ul>
+
+                    <hr>
+
+                    <h3>Replica Sets</h3>
+                    <ul>
+                        <li>A replica set is a group of MongoDB servers that maintain the same data set, providing redundancy and high availability.</li>
+                        <li>One primary node handles all write operations, while secondary nodes replicate the data from the primary and can handle read operations.</li>
+                        <li>If the primary node fails, one of the secondary nodes is automatically elected as the new primary.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you perform pagination in MongoDB? (skip and limit)
+                </div>
+                <div class="answer">
+                    <p>Pagination is used to display data page by page (like in an eCommerce product listing)
+                    MongoDB provides:</p>
+                    <ul>
+                        <li>
+                            skip(n) → Skips the first n documents.
+                        </li>
+                        <li>
+                            limit(n) → Limits the number of documents returned.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is the drawback of using skip() for large collections?
+                </div>
+                <div class="answer">
+                    <p>Performance issue: skip(n) still scans through the first n documents before discarding them.</p>
+                    
+                    <h4>Solution:</h4>
+                    <ul>
+                        <li>Use range-based pagination instead of skip/limit for large datasets.</li>
+                        <li>Keep track of the last seen value (like _id or a timestamp) and query for documents greater than that value.</li>
+                        <li>This avoids the overhead of skipping documents and is more efficient.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+                    <pre>
+db.products.find({ _id: { $gt: lastSeenId } }).limit(10);
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you implement soft deletes in MongoDB?
+                </div>
+                <div class="answer">
+                    <p>Performance issue: skip(n) still scans through the first n documents before discarding them.</p>
+                    <h4>Example:</h4>
+                    <pre>
+// 👉 Schema Example:
+{
+    "_id": 1,
+    "name": "Product A",
+    "deleted": false
+}
+
+👉 Mark as deleted:
+db.products.updateOne({ _id: 1 }, { $set: { deleted: true } });
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you implement full-text search in MongoDB?
+                </div>
+                <div class="answer">
+                    <h4>Example:</h4>
+                    <pre>
+👉 Create a text index:
+db.articles.createIndex({ content: "text", title: "text" });
+
+👉 Search:
+db.articles.find({ $text: { $search: "mongodb database" } });
+                    </pre>
+
+                    <ul>
+                        <li>Supports stemming (searching “run” also finds “running”).</li>
+                        <li>Ignores stop words (“a”, “the”, etc.).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Query for Find the Top 5 Highest-Paid Employees
+                </div>
+                <div class="answer">
+                    <pre>
+db.employees.find()
+   .sort({ salary: -1 })   // sort by salary descending
+   .limit(5)     
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Query for Aggregation: Group Orders by Status and Count
+                </div>
+                <div class="answer">
+                    <pre>
+db.orders.aggregate([
+   {
+      $group: {
+         _id: "$status",          // group by order status
+         totalOrders: { $sum: 1 } // count each order
+      }
+   }
+])   
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Query for finding Products with price > 100 and category electronics/clothing
+                </div>
+                <div class="answer">
+                    <pre>
+db.products.find({
+   price: { $gt: 100 },
+   category: { $in: ["electronics", "clothing"] }
+})  
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Query for Update All Inactive Users → Archived
+                </div>
+                <div class="answer">
+                    <pre>
+db.users.updateMany(
+   { status: "inactive" },       // filter
+   { $set: { status: "archived"} } // update
+) 
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Query for Transaction: Move Money Between Accounts
+                </div>
+                <div class="answer">
+                    <pre>
+const session = db.getMongo().startSession();
+
+try {
+    session.startTransaction();
+
+    const accounts = session.getDatabase("bank").accounts;
+
+    // Deduct from sender
+    accounts.updateOne(
+        { accountNumber: "A123" },
+        { $inc: { balance: -100 } }
+    );
+
+    // Add to receiver
+    accounts.updateOne(
+        { accountNumber: "B456" },
+        { $inc: { balance: 100 } }
+    );
+
+    // Commit transaction
+    session.commitTransaction();
+    print("Transaction successful");
+} catch (e) {
+    session.abortTransaction();
+    print("Transaction failed: " + e);
+} finally {
+    session.endSession();
+}
+                    </pre>
+                </div>
+            </div>
 
 
 
