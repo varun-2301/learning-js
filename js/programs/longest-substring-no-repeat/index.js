@@ -7,18 +7,26 @@ function lengthOfLongestSubstring(s) {
     let seen = new Set()
     let left =0
     let maxLength = 0
+    let startIndex = 0
 
     for(let right = 0; right< s.length; right++){
-        if(seen.has(s[right])){
+        while(seen.has(s[right])){
             seen.delete(s[left])
             left++
         }
 
         seen.add(s[right])
-        maxLength = Math.max(maxLength, right - left + 1)
+
+        if(right - left + 1 > maxLength){
+            startIndex = left
+            maxLength = right-left + 1
+        }
     }
 
-    return maxLength
+    return {
+        length: maxLength,
+        str: s.substring(startIndex, startIndex + maxLength)
+    }
 }
 
 // Example usage:
