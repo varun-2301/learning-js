@@ -445,30 +445,30 @@ async function fetchInSequence() {
                 a higher-order function is a function that can accept other functions as arguments, return functions, or both
                 <h4>Example 1</h4>
                 <pre>
-                function greet(name) { 
-                    return `Hi!! ${name} `; 
-                } 
-                
-                function greet_name(greeting, message, name) { 
-                    console.log(`${greeting(name)} ${message}`); 
-                } 
-                
-                greet_name(greet, 'Welcome To Example', 'Varun');
+function greet(name) { 
+    return `Hi!! ${name} `; 
+} 
+
+function greet_name(greeting, message, name) { 
+    console.log(`${greeting(name)} ${message}`); 
+} 
+
+greet_name(greet, 'Welcome To Example', 'Varun');
                 </pre>
                 <br>
                 <h4>Example 2</h4>
                 <pre>
-                function multiplier(factor) { 
-                    return function (x) { 
-                        return x * factor; 
-                    }; 
-                } 
-                
-                const double = multiplier(2); 
-                const triple = multiplier(3); 
-                
-                console.log(double(5)); 
-                console.log(triple(5));
+function multiplier(factor) { 
+    return function (x) { 
+        return x * factor; 
+    }; 
+} 
+
+const double = multiplier(2); 
+const triple = multiplier(3); 
+
+console.log(double(5)); 
+console.log(triple(5));
                 </pre>
             </div>
         </div>
@@ -481,45 +481,45 @@ async function fetchInSequence() {
                 <h4>Creating object with a constructor</h4>
                     <section>
                         <pre>
-                        function vehicle(name) {
-                            this.name = name;
-                        }
-                        // New keyword to create an object
-                        let car = new vehicle('GT')
+function vehicle(name) {
+    this.name = name;
+}
+// New keyword to create an object
+let car = new vehicle('GT')
                         </pre>
                     </section>
                 <h4>Using object literals</h4>
                     <section>
                         <pre>
-                        var car = {}
+var car = {}
                         </pre>
                     </section>
                 <h4>Creating object with Object.create() method</h4>
                     <p>creates a new object, using an existing object as the prototype of the newly created object</p>
                     <section>
                         <pre>
-                        const coder = {
-                            isStudying : false,
-                            printIntroduction : function(){
-                                console.log(`My name is ${this.name}. Am I studying?: ${this.isStudying}`);
-                            }
-                        };
-                        const me = Object.create(coder);
-                        me.name = 'Mukul';
-                        me.isStudying = true;
-                        me.printIntroduction()
+const coder = {
+    isStudying : false,
+    printIntroduction : function(){
+        console.log(`My name is ${this.name}. Am I studying?: ${this.isStudying}`);
+    }
+};
+const me = Object.create(coder);
+me.name = 'Mukul';
+me.isStudying = true;
+me.printIntroduction()
                         </pre>
                     </section>
                 <h4>Using es6 classes</h4>
                     <section>
                         <pre>
-                        class Vehicle {
-                            constructor(name) {
-                                this.name = name;
-                            }
-                        }
-                    
-                        let car1 = new Vehicle('BMW')
+class Vehicle {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+let car1 = new Vehicle('BMW')
                         </pre>
                     </section>
             </div>
@@ -586,16 +586,16 @@ async function fetchInSequence() {
                 </ul>
                 <h6>Example</h6>
                 <pre>
-                    const user = {
-                        name: "Varun",
-                        age: 30
-                    };
-                    
-                    Object.seal(user);
+const user = {
+    name: "Varun",
+    age: 30
+};
 
-                    user.name = "Vikram";    // ✅ Allowed
-                    user.city = "Delhi";     // ❌ Not added
-                    delete user.age;         // ❌ Not allowed
+Object.seal(user);
+
+user.name = "Vikram";    // ✅ Allowed
+user.city = "Delhi";     // ❌ Not added
+delete user.age;         // ❌ Not allowed
                 </pre>
 
                 <h4>Object.freeze</h4>
@@ -604,16 +604,16 @@ async function fetchInSequence() {
                 </ul>
                 <h6>Example</h6>
                 <pre>
-                const config = {
-                    theme: "dark",
-                    version: 1.0
-                };
+const config = {
+    theme: "dark",
+    version: 1.0
+};
 
-                Object.freeze(config);
+Object.freeze(config);
 
-                config.theme = "light";  // ❌ Not changed
-                config.mode = "auto";    // ❌ Not added
-                delete config.version;   // ❌ Not allowed
+config.theme = "light";  // ❌ Not changed
+config.mode = "auto";    // ❌ Not added
+delete config.version;   // ❌ Not allowed
                 </pre>
 
                 <h4>
@@ -711,13 +711,13 @@ async function fetchInSequence() {
                 </ul>
                 <h4>Example</h4>
                 <pre>
-                function a(){
-                    var b = 10
-                    c()
-                    function c(){
-                        console.log(b)
-                    }
-                }
+function a(){
+    var b = 10
+    c()
+    function c(){
+        console.log(b)
+    }
+}
                 </pre>
             </div>
         </div>
@@ -744,19 +744,19 @@ async function fetchInSequence() {
                 </ul>
                 <h4>Example</h4>
                 <pre>
-                const animal = {
-                    eats: true,
-                    walk() {
-                        console.log("Animal walks");
-                    }
-                }
+const animal = {
+    eats: true,
+    walk() {
+        console.log("Animal walks");
+    }
+}
 
-                const dog = Object.create(animal); // dog inherits from animal
-                dog.barks = true;
+const dog = Object.create(animal); // dog inherits from animal
+dog.barks = true;
 
-                console.log(dog.eats); // ✅ true (inherited)
-                dog.walk();            // ✅ "Animal walks"
-                console.log(dog.barks); // ✅ true (own property)
+console.log(dog.eats); // ✅ true (inherited)
+dog.walk();            // ✅ "Animal walks"
+console.log(dog.barks); // ✅ true (own property)
                 </pre>
             </div>
         </div>
@@ -810,23 +810,20 @@ async function fetchInSequence() {
                 </ul>
                 <h4>Example</h4>
                 <pre>
-                    // Generator function in javascript
-                    function* greetGenerator() {
-                        yield "Hello";
-                        yield "Hi";
-                        yield "Welcome";
-                    }
+// Generator function in javascript
+function* greetGenerator() {
+    yield "Hello";
+    yield "Hi";
+    yield "Welcome";
+}
 
-                    const greeter = greetGenerator();
+const greeter = greetGenerator();
 
-                    console.log(greeter.next()); // { value: "Hello", done: false }
-                    console.log(greeter.next()); // { value: "Hi", done: false }
-                    console.log(greeter.next()); // { value: "Welcome", done: false }
-                    console.log(greeter.next()); // { value: undefined, done: true }
-
-
+console.log(greeter.next()); // { value: "Hello", done: false }
+console.log(greeter.next()); // { value: "Hi", done: false }
+console.log(greeter.next()); // { value: "Welcome", done: false }
+console.log(greeter.next()); // { value: undefined, done: true }
                 </pre>
-
             </div>
         </div>
 
@@ -854,24 +851,24 @@ async function fetchInSequence() {
                 
                 <h4>Example using Bind</h4>
                 <pre>
-                    let multiply = function(x, y){
-                        console.log(x * y)
-                    }
-    
-                    let multiplyByTwo = multiply.bind(this, 2)
-                    multiplyByTwo(3)
+let multiply = function(x, y){
+    console.log(x * y)
+}
+
+let multiplyByTwo = multiply.bind(this, 2)
+multiplyByTwo(3)
                 </pre>
 
                 <h4>Example using Closures</h4>
                 <pre>
-                    let multiply = function(x){
-                        return function(y){
-                            console.log(x * y)
-                        }
-                    }
-    
-                    let multiplyByThree = multiply(3)
-                    multiplyByThree(3)
+let multiply = function(x){
+    return function(y){
+        console.log(x * y)
+    }
+}
+
+let multiplyByThree = multiply(3)
+multiplyByThree(3)
                 </pre>
             </div>
         </div>
@@ -972,7 +969,7 @@ const pipe = (...fns) => input => fns.reduce((acc, fn) => fn(acc), input);
 const pipeResult = pipe(add, multiply, subtract)(5); // ((5 + 1) * 2) - 3 = 9
 
 // Using compose
-const compose = (...fns) => input => fns.reduceRight((acc, fn) => fn(acc), input);
+const compose = (...fns) => input => fns.reduce((acc, fn) => fn(acc), input);
 const composeResult = compose(add, multiply, subtract)(5); // (5 - 3) * 2 + 1 = 9
 
 // Simple explanation:

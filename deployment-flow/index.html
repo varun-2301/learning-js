@@ -16,7 +16,17 @@
         <li>Jenkins triggers build</li>
         <li>Build Docker images</li>
         <li>Push to DockerHub</li>
-        <li>Apply Kubernetes deployment</li>
+        <li>Apply Kubernetes deployment
+            <ul>
+                <li>Pulls the images: When you apply your deployment.yaml (or Helm chart, etc.), Kubernetes worker nodes pull the Docker images from DockerHub.</li>
+                <li>Creates Pods: A Pod is the smallest deployable unit in k8s (usually runs one container, sometimes multiple tightly coupled ones).</li>
+                <li>Maintains desired state: If you say replicas: 3, k8s ensures 3 Pods are always running. If one crashes, it replaces it automatically.</li>
+                <li>Networking & Services: k8s services (ClusterIP, NodePort, LoadBalancer) handle communication between Pods and expose your app outside the cluster. In your flow, the LoadBalancer service makes your app accessible to the internet.</li>
+                <li>Scaling: You can scale up/down with a single command (kubectl scale or via HPA).</li>
+                <li>Monitoring & Healing: k8s continuously monitors Pods, restarts failed ones, and can reschedule them on different nodes if hardware fails.</li>
+            </ul>
+        </li>
+
         <li>LoadBalancer exposes your app to the world</li>
         <li>Scalable, monitored, cloud-hosted MERN app</li>
     </ol>
