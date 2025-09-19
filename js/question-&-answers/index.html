@@ -984,6 +984,86 @@ const compose = (...fns) => {
                 </p>
             </div>
         </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Difference between forEach and map in JavaScript
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>Return Value:
+                        <ul>
+                            <li>forEach → always returns undefined.</li>
+                            <li>map → returns a new array with transformed values.</li>
+                        </ul>
+                    </li>
+                    <br />
+                    <li>Use Case:
+                        <ul>
+                            <li>forEach → for side effects (logging, DOM updates, mutations).</li>
+                            <li>map → for transforming data into a new array.</li>
+                        </ul>
+                    </li>
+                    <br />
+                    <li>Chainability:
+                        <ul>
+                            <li>forEach → not chainable (returns undefined).</li>
+                            <li>map → chainable with other array methods.</li>
+                        </ul>
+                    </li>
+                </ul>
+<pre><code>
+const nums = [1, 2, 3];
+
+// forEach → side effects only
+const res1 = nums.forEach(n => n * 2);
+console.log(res1); // undefined
+
+// map → returns new array
+const res2 = nums.map(n => n * 2);
+console.log(res2); // [2, 4, 6]
+</code></pre>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                Difference between some and find in JavaScript
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>Return Value:
+                        <ul>
+                            <li>some → returns a boolean.It tells you whether at least one element matches the condition.</li>
+                            <li>find → returns the first element that matches the condition. If no element matches, it returns undefined.</li>
+                        </ul>
+                    </li>
+                    <br />
+                    <li>Use Case:
+                        <ul>
+                            <li>some → Use when you just want to check existence</li>
+                            <li>find → Use when you want the actual element that satisfies the condition</li>
+                        </ul>
+                    </li>
+                </ul>
+<pre>
+const nums = [1, 2, 3, 4, 5];
+
+// some → checks if any number > 3
+const hasGreater = nums.some(n => n > 3);
+console.log(hasGreater); 
+// true
+
+// find → gets the first number > 3
+const firstGreater = nums.find(n => n > 3);
+console.log(firstGreater); 
+// 4
+</pre>
+            </div>
+        </div>
+
+
+        
     </div>
 
 

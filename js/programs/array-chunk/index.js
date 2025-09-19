@@ -10,11 +10,7 @@ function chunkArray(array, chunkSize) {
 
     let result = []
     for(let i = 0; i < length; i+= chunkSize) {
-        let chunk = []
-        for(let j = i; j < length && j < (i+chunkSize); j++)
-            chunk.push(array[j])
-
-        result.push(chunk)
+        result.push(array.slice(i, i+chunkSize))
     }
 
     return result

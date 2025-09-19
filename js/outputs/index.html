@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Scenario Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        details {
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .answer {
+            margin-top: 10px;
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .explanation {
+            margin-top: 10px;
+        }
+
+        .explanation pre {
+            background-color: #e8e8e8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Scenario Questions</h1>
+
+    <!-- Example Question -->
+    <div class="question-card">
+        <div class="question">console.log(typeof NaN);</div>
+            <details>
+                <summary>Output & Explanation</summary>
+                <div class="answer">"number"</div>
+                <div class="explanation">
+                    In JavaScript, <code>NaN</code> (Not-a-Number) is still considered a numeric value. 
+                    That’s why <code>typeof NaN</code> returns <code>"number"</code>.
+                </div>
+            </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log([] + []);</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">"" (empty string)</div>
+            <div class="explanation">
+                <ul>
+                    <li>
+                        Both arrays are converted to strings when using the <code>+</code> operator.
+                    </li>
+                    <li>
+                        <code>[].toString()</code> becomes <code>""</code>, so <code>[] + []</code> results in an empty string.
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log([1, 2] + [3, 4])</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">"1,23,4"</div>
+            <div class="explanation">
+                <ul>
+                    <li>In JS, the + operator is overloaded </li>
+                    <li>If both operands are numbers, it does arithmetic addition</li>
+                    <li>If either operand is a string, it does string concatenation</li>
+                    <li>When arrays are involved, JavaScript tries to convert them into primitive values:</li>
+<pre>
+    [1, 2].toString() → "1,2"
+    [3, 4].toString() → "3,4"
+</pre>
+                    <li>Since both are strings, the + operator concatenates them</li>
+<pre>
+    "1,2" + "3,4" becomes "1,23,4"
+</pre>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log(true + false)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">1</div>
+            <div class="explanation">
+                <ul>
+                    <li>In JavaScript, when you use the + operator with booleans, they are converted to numbers.</li>
+<pre>
+    true → 1
+    false → 0
+</pre>
+                    <li>So the output is 1 + 0 = 1</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log("5" - 2)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">3</div>
+            <div class="explanation">
+                <ul>
+                    <li>Unlike +, subtraction is not overloaded for string concatenation</li>
+                    <li>it only works with numbers</li>
+                    <li>So JavaScript tries to coerce both operands to numbers</li>
+<pre>
+    "5" → 5 (string to number conversion)
+    2 → 2
+</pre>
+                    <li>So the output is 5 - 2 = 3</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log(null + 1)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">1</div>
+            <div class="explanation">
+                <ul>
+                    <li>With +, If any operand is a string → concatenation else → numeric addition</li>
+                    <li>null when converted to a number is 0</li>
+                    <li>So the output is 0 + 1 = 1</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log(null + 1)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">1</div>
+            <div class="explanation">
+                <ul>
+                    <li>With +, If any operand is a string → concatenation else → numeric addition</li>
+                    <li>null when converted to a number is 0</li>
+                    <li>So the output is 0 + 1 = 1</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log(typeof NaN)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">"number"</div>
+            <div class="explanation">
+                <ul>
+                    <li>NaN stands for “Not-a-Number”, but ironically, its type in JavaScript is still "number"</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log([] == ![])</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">true</div>
+            <div class="explanation">
+<pre>
+1. Evaluate the right-hand side (![])
+[] is a truthy value.
+![] → false.
+So now the comparison is:
+[] == false
+
+
+2. Equality with == (loose equality)
+When comparing an object ([]) with a boolean (false), JavaScript converts the boolean to a number.
+false → 0
+So it becomes:
+[] == 0
+
+
+3. Array to primitive conversion
+[] when converted to a number → first .toString() is called.
+[].toString() → "" (empty string).
+Number("") → 0.
+So [] also becomes 0.
+
+
+4. Final comparison
+0 == 0  // true
+</pre>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log(0.1 + 0.2 === 0.3)</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">false</div>
+            <div class="explanation">
+                <ul>
+                    <li>floating-point math is approximate in JS</li>
+                    <li>JavaScript numbers are stored as 64-bit floating point</li>
+                    <li>Some decimal fractions (like 0.1 and 0.2) cannot be represented exactly in binary floating-point</li>
+                    <li>When you add them</li>
+<pre>
+    0.1 + 0.2 = 0.30000000000000004
+            and not exactly
+            0.3
+</pre>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">console.log([...'hello'])</div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">["h", "e", "l", "l", "o"]</div>
+            <div class="explanation">
+                <ul>
+                    <li>The spread operator (...) expands iterables (arrays, strings, sets, etc.) into individual elements</li>
+                    <li>A string is iterable character by character</li>
+<pre>
+    "hello" → 'h', 'e', 'l', 'l', 'o'
+</pre>
+                    <li>When wrapped in an array literal</li>
+<pre>
+    [...'hello'] becomes ["h", "e", "l", "l", "o"]
+</pre>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">
+<pre>
+(() => {
+    let x, y;
+    try {
+        throw new Error();
+    } catch (x) {
+        (x = 1), (y = 2);
+        console.log(x);
+    }
+    console.log(x);
+    console.log(y);
+})()
+</pre>
+        </div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">
+<pre>
+1
+undefined
+2
+</pre>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>The output is this as the code executes, try block throws error so control moves to catch block</li>
+                    <li>In catch block, the x variable is taken as argument which brings the concept of shadow block scope (like global or function block scope) and new x variable is created for catch block which has no relation with outside variable</li>
+                    <li>In catch block, x and y is assigned values. so x value is assigned to the local scope variable where as y remains independent of this shadow block scoped as it was not passed as argument to catch block and so the value of y is assigned to variable decalred at top</li>
+                    <li>When the control moves out of catch block, the x variable remains undefined and y variable was assigned value</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">
+<pre>
+let a1 = a2 = [1, 2, 3];
+a1.length = 2;
+console.log(a1, a2);
+</pre>
+        </div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">
+<pre>
+[1, 2] [1, 2]
+</pre>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>As Right-to-left assignment, a2 = [1,2,3] creates an array and assigns it to a2</li>
+                    <li>Then a1 = a2 assigns the same reference to a1</li>
+                    <li>Now a1 and a2 both point to the same array in memory</li>
+                    <li>Setting .length = 2 truncates the array in place</li>
+                    <li>So [1,2,3] becomes [1,2]</li>
+                </ul>
+            </div>
+        </details>
+    </div>
+
+    <div class="question-card">
+        <div class="question">
+<pre>
+let a = b = [1, 2]
+b.push(3)
+console.log(a, b)
+</pre>
+        </div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">
+<pre>
+[1, 2, 3] [1, 2, 3]
+</pre>
+            </div>
+            <div class="explanation">
+                Explanation as above
+            </div>
+        </details>
+    </div>
+
+
+</body>
+</html>

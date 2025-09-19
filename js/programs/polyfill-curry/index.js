@@ -14,3 +14,12 @@ function curryPolyfill(fn){
         }
     }
 }
+
+function sum(a,b,c){
+    return a+b+c
+}
+
+const data = curry(sum)
+console.log(data(1,2,3))
+console.log(data(1)(2)(3))
+console.log(data(1,2)(3))
