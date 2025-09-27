@@ -70,7 +70,6 @@
         }
         .answer ul> li {
             margin-bottom: 10px;
-            
         }
         .answer h4 {
             margin-top: 10px;
@@ -187,8 +186,55 @@
                 <ul>
                     <li>Hooks are functions that let you use state and other React features without writing a class</li>
                     <li>They allow you to manage state, lifecycle methods, and side effects in functional components</li>
-                    <li>Common hooks include useState, useEffect, useContext, useReducer and custom hooks</li>
                 </ul>
+
+                <h4>Basic Hooks (commonly used hooks for state and lifecycle)</h4>
+                    <ul>
+                        <li>useState → Manages local state</li>
+                        <li>useEffect → Handles side effects (API calls, subscriptions, DOM updates)</li>
+                        <li>useContext → Consumes values from React Context</li>
+                    </ul>
+                <br />
+                <h4>Additional Hooks (Provide more control and optimization)</h4>
+                    <ul>
+                        <li>useReducer → Alternative to useState for complex state logic</li>
+                        <li>useCallback → Memoizes functions so they don’t re-create on every render</li>
+                        <li>useMemo → Memoizes values/results of expensive calculations</li>
+                        <li>useRef → Creates a mutable object that persists across renders (DOM refs or storing mutable values)</li>
+                        <li>useImperativeHandle → Customizes what gets exposed when using ref with forwardRef</li>
+                        <li>useLayoutEffect → Like useEffect, but fires synchronously after all DOM mutations.</li>
+                        <li>useDebugValue → Used in custom hooks to display debug info in React DevTools</li>
+                    </ul>
+                <br />
+                <h4>Hooks for Performance</h4>
+                    <ul>
+                        <li>useTransition → Allows marking state updates as “non-urgent” (for concurrent rendering).</li>
+                        <li>useDeferredValue → Defers re-rendering of non-critical values.</li>
+                    </ul>
+                <br />
+                <h4>Hooks for Advanced React (Concurrent & Experimental)</h4>
+                    <ul>
+                        <li>useId → Generates unique IDs for accessibility or list rendering</li>
+                        <li>useSyncExternalStore → For subscribing to external stores (introduced in React 18).</li>
+                        <li>useInsertionEffect → Used by CSS-in-JS libraries to inject styles before DOM painting</li>
+                    </ul>
+                <br />
+                <h4>Custom Hooks</h4>
+<pre>
+function useFetch(url) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch(url).then(res => res.json()).then(setData);
+  }, [url]);
+
+  return data;
+}
+
+</pre>
+                </ul>
+                    
+                
             </div>
         </div>
 
@@ -730,7 +776,7 @@ class MyComponent extends Component {
                     <li><b>Server-Side Rendering (SSR):</b> The initial HTML is generated on the server and sent to the client.</li>
                     <li><b>Hydration:</b> React takes over the static HTML and attaches event listeners, making it interactive.</li>
                     <li><b>Performance:</b> Hydration can improve performance by reducing the time to first paint, as the initial HTML is already rendered.</li>
-                    <li><b>Consistency:</</b> Ensures that the client-side React app matches the server-rendered HTML to avoid mismatches.</li>
+                    <li><b>Consistency:</b> Ensures that the client-side React app matches the server-rendered HTML to avoid mismatches.</li>
                     <li><b>ReactDOM.hydrate:</b> Used to hydrate the server-rendered HTML instead of ReactDOM.render.</li>
                 </ul>
 
@@ -746,14 +792,8 @@ const app = express();
 app.get('*', (req, res) => {
 const html = ReactDOMServer.renderToString(<App />);
 res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head><title>React SSR</title></head>
-    <body>
-        <div id="root">${html}</div>
-        <script src="/bundle.js"></script>
-    </body>
-    </html>
+    <div id="root">${html}</div>
+    <script src="/bundle.js"></script>
 `);
 });
 app.listen(3000, () => {
@@ -906,6 +946,329 @@ export default UsersList;
             </div>
         </div>
 
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                PureComponent v/s React.memo
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>
+                        PureComponent is for class components and prevents unnecessary re-renders by doing a shallow comparison of both props and state. 
+                    </li>
+                    <li>
+                        React.memo is its functional equivalent, but it only checks props. 
+                    </li>
+                    <li>
+                        Unlike PureComponent, React.memo also allows passing a custom comparison function, which makes it more flexible in modern React.
+                    </li>
+                </ul>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>React.PureComponent</th>
+                            <th>React.Memo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Component type</td>
+                            <td>Class components only</td>
+                            <td>Function components only</td>
+                        </tr>
+                        <tr>
+                            <td>Comparison type</td>
+                            <td>Shallow compare of props + state</td>
+                            <td>Shallow compare of props only</td>
+                        </tr>
+                        <tr>
+                            <td>Custom comparison logic</td>
+                            <td>❌ Not possible</td>
+                            <td>✅ Possible via 2nd argument</td>
+                        </tr>
+                        <tr>
+                            <td>State optimization</td>
+                            <td>✅ Includes state</td>
+                            <td>❌ Only props</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>Less (fixed behavior)</td>
+                            <td>More (customizable)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                useReducer v/s useSelector
+            </div>
+            <div class="answer">
+                <ul>
+                    <li>
+                        useReducer is a React hook for managing complex local state transitions inside a single component. 
+                    </li>
+                    <li>
+                        useSelector, on the other hand, is a Redux hook that lets you read values from the global Redux store. 
+                    </li>
+                    <li>
+                        So, use useReducer when the state is local to one component, and useSelector when you need to consume global shared state managed by Redux.
+                    </li>
+                </ul>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>useReducer (React)</th>
+                            <th>useSelector (Redux)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Scope of state</td>
+                            <td>Local (inside one component)</td>
+                            <td>Global (across entire app)</td>
+                        </tr>
+                        <tr>
+                            <td>Where reducer lives</td>
+                            <td>Inside component</td>
+                            <td>In Redux store</td>
+                        </tr>
+                        <tr>
+                            <td>How state updates</td>
+                            <td>dispatch(action) directly in component</td>
+                            <td>dispatch(action) via Redux store</td>
+                        </tr>
+                        <tr>
+                            <td>Good for</td>
+                            <td>Complex local state logic (form, wizard, undo/redo)</td>
+                            <td>Centralized app-wide state (auth, user, cart)</td>
+                        </tr>
+                        <tr>
+                            <td>Built-in vs External</td>
+                            <td>Built-in React hook</td>
+                            <td>From react-redux library</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Example (useReducer)</h4>
+<pre>
+function todoReducer(state, action) {
+  switch (action.type) {
+    case "ADD":
+      return [...state, { id: Date.now(), text: action.text }];
+    case "REMOVE":
+      return state.filter(t => t.id !== action.id);
+    default:
+      return state;
+  }
+}
+
+function TodoApp() {
+  const [todos, dispatch] = useReducer(todoReducer, []);
+
+  return &lpar;
+    &lt;>
+      &lt;button onClick={() => dispatch({ type: "ADD", text: "Learn React" })}>
+        Add
+      &lt;/button&gt;
+    <div>
+        {t.text}
+        &lt;button onClick={() => dispatch({ type: "REMOVE", id: t.id })}&gt;
+            X
+        &lt;/button&gt;
+    </div>
+    &lt;/>
+  &rpar;;
+}
+</pre>
+
+                <h4>Example (useSelector)</h4>
+<pre>
+function TodoApp() {
+  const todos = useSelector(state => state.todos); // select from global store
+  const dispatch = useDispatch();
+
+  return &lpar;
+    &lt;>
+      &lt;button onClick={() => dispatch({ type: "ADD", text: "Learn React" })}>
+        Add
+      &lt;/button&gt;
+    <div>
+        {t.text}
+        &lt;button onClick={() => dispatch({ type: "REMOVE", id: t.id })}&gt;
+            X
+        &lt;/button&gt;
+    </div>
+    &lt;/>
+  &rpar;;
+}
+</pre>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                useCallback v/s useMemo
+            </div>
+            <div class="answer">
+                <h4>useCallback</h4>
+                <ul>
+                    <li>
+                        Returns a memoized function (i.e., the same function reference across renders unless dependencies change) 
+                    </li>
+                    <li>
+                        When you want to avoid unnecessary re-creations of functions — especially if you’re passing them as props to child components (to prevent re-renders).
+                    </li>
+                </ul>
+
+                <h4>useMemo</h4>
+                <ul>
+                    <li>
+                        Returns a memoized value (the result of a computation). 
+                    </li>
+                    <li>
+                        When you want to avoid expensive recalculations on every render.
+                    </li>
+                </ul>
+
+                <br/>
+
+                <h4>Example (useMemo)</h4>
+<pre>
+import React, { useState, useMemo } from "react";
+
+const ProductList = ({ products }) => {
+  const [search, setSearch] = useState("");
+
+  // Expensive operation: filtering products
+  const filteredProducts = useMemo(() => {
+    console.log("Filtering products...");
+    return products.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, products]); // runs only if search/products change
+
+  return &lpar;
+    &lt;div>
+      &lt;input
+        type="text"
+        placeholder="Search product..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      &lt;ul>
+        {filteredProducts.map((p) => (
+          &lt;li key={p.id}>{p.name}</li>
+        ))}
+      &lt;/ul>
+    &lt;/div>
+  &rpar;
+};
+
+</pre>
+             <h4>Example (useCallback)</h4>
+<pre>
+import React, { useState, useCallback } from "react";
+
+const Product = React.memo&lpar;&lpar;{ product, onLike }&rpar; => {
+  console.log("Rendering product:", product.name);
+  return &lpar;
+    &lt;div>
+      {product.name}
+      &lt;button onClick={() => onLike(product.id)}>Like</button>
+    &lt;/div>
+  &rpar;;
+}&rpar;;
+
+const ProductList = ({ products }) => {
+  const [liked, setLiked] = useState([]);
+
+  // Memoize function so child Product doesn't re-render unnecessarily
+  const handleLike = useCallback((id) => {
+      setLiked((prev) => [...prev, id]);
+    },[]); // same function reference unless dependencies change
+
+  return (
+    &lt;div>
+      {products.map((p) => (
+        &lt;Product key={p.id} product={p} onLike={handleLike} />
+      ))}
+    &lt;/div>
+  );
+};
+
+</pre>   
+                
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                onChange v/s onInputChange
+            </div>
+            <div class="answer">
+                <h4>onChange (React & HTML)</h4>
+                <ul>
+                    <h5>plain HTML (vanilla JS):</h5>
+                    <li>
+                        change event fires when the input loses focus (blur) and its value has changed 
+                    </li>
+                    <li>
+                        Example: typing in an input doesn’t trigger change until you tab out.
+                    </li>
+
+                    <h5>React:</h5>
+                    <li>
+                        React normalizes onChange to behave like input → it fires on every keystroke (like live typing) 
+                    </li>
+                    <li>
+                        So in React, onChange ≈ onInput in vanilla JS.
+                    </li>
+                </ul>
+                <br/>
+                <h4>onInput / onInputChange</h4>
+                <ul>
+                    <h5>plain HTML (vanilla JS):</h5>
+                    <li>
+                        Fires immediately whenever the value changes (every keystroke, paste, drag-drop, voice input, etc.) 
+                    </li>
+                    <li>
+                        More "raw" than change.
+                    </li>
+
+                    <h5>React:</h5>
+                    <li>
+                        ⚠️ Not a standard React event prop on <input>
+                    </li>
+                    <li>
+                        You’ll usually see it in third-party UI libraries like Material-UI (Autocomplete, TextField)
+                    </li>
+                    <li>
+                        In those cases, onInputChange is a custom prop that specifically tracks input changes in controlled components (often different from value changes via selection).
+                    </li>
+                </ul>
+
+                <br/>
+
+                <h4>Example with Material-UI Autocomplete</h4>
+<pre>
+&lt;Autocomplete
+  options={["Apple", "Banana", "Cherry"]}
+  onChange={(event, value) => console.log("Selected:", value)}        // when option selected
+  onInputChange={(event, inputValue) => console.log("Typed:", inputValue)} // every keystroke in textbox
+/>
+
+</pre>
+            
+                
+            </div>
+        </div>
 
 
     </div>
