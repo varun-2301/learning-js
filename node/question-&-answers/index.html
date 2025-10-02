@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="../js.png">
+        <title>MONGODB Q&A</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #f9f9f9;
+                padding: 20px;
+            }
+
+            .qa-container {
+                max-width: 800px;
+                margin: auto;
+            }
+
+            .qa-item {
+                margin-bottom: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                background-color: #fff;
+                transition: all 0.3s ease;
+            }
+
+            .question {
+                padding: 15px 20px;
+                background-color: #007BFF;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .question:hover {
+                background-color: #0056b3;
+            }
+
+            .question::after {
+                content: '+';
+                font-size: 18px;
+                transition: transform 0.3s ease;
+            }
+
+            .question.active::after {
+                content: '−';
+            }
+
+            .answer {
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 20px;
+                background-color: #f4f4f4;
+                transition: max-height 0.5s ease, padding 0.3s ease;
+            }
+
+            .answer.show {
+                max-height: 500px; /* Enough for most answers */
+                padding: 15px 20px;
+                overflow-y: auto;
+            }
+            .answer ul {
+                list-style-type: disc;
+                padding-left: 20px;
+            }
+            .answer ul> li {
+                margin-bottom: 10px;
+                
+            }
+            .answer h4 {
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+            .answer pre {
+                background-color: #e8e8e8;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+            table> thead > tr > th {
+                text-align: left;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="qa-container">
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is Node.js and how is it different from traditional web servers?
+                </div>
+                <div class="answer">
+                    Node.js is a JavaScript runtime built on Chrome’s V8 engine that allows you to run JavaScript code outside of a web browser. It is designed for building scalable network applications.
+                    <p>
+                        <h4>Differences from traditional web servers (like Apache, Nginx):</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Features</th>
+                                    <th>NodeJS</th>
+                                    <th>Traditional Web Server</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Execution</td>
+                                    <td>Uses non-blocking, event-driven I/O</td>
+                                    <td>Uses thread-per-request blocking model</td>
+                                </tr>
+                                <tr>
+                                    <td>Language</td>
+                                    <td>JavaScript</td>
+                                    <td>Often C, PHP, Python</td>
+                                </tr>
+                                <tr>
+                                    <td>Concurrency</td>
+                                    <td>Single-threaded, handles multiple requests via event loop</td>
+                                    <td>Multi-threaded or process-based concurrency</td>
+                                </tr>
+                                <tr>
+                                    <td>Performance</td>
+                                    <td>High for I/O-intensive tasks</td>
+                                    <td>Better for CPU-intensive tasks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Why is Node.js single-threaded, and how does it handle concurrency?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Node.js uses a single main thread for executing JavaScript code to avoid context switching overhead.</li>
+                        <li>Concurrency is achieved through non-blocking I/O and the event loop:
+                            <ul>
+                                <li>
+                                    While the main thread executes JavaScript, I/O operations (like reading files, DB queries) are delegated to worker threads or the OS.
+                                </li>
+                                <li>
+                                    Once the operation completes, a callback/event is pushed to the event loop queue
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            This allows Node.js to handle thousands of concurrent connections without spawning multiple threads.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    what is concurrency?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Concurrency is a concept in computing that refers to the ability of a system to handle multiple tasks or operations at the same time, logically overlapping, even if the tasks are not physically executing simultaneously.</li>
+                        <li>Concurrency = multiple tasks making progress together</li>
+                        <li>It does not necessarily mean simultaneous execution; tasks may take turns being executed, but appear to run at the same time from the user’s perspective</li>
+                    </ul>
+                    
+                    <h4>Example</h4>
+                    <p>Imagine a restaurant chef:</p>
+                    <ul>
+                        <li>Synchronous (non-concurrent): Chef cooks one dish at a time. Only when dish 1 is done, he starts dish 2.
+                        </li>
+                        <li>
+                            Asynchronous (concurrent): Chef starts boiling pasta (waits for water), then chops vegetables while waiting. Both tasks progress without blocking each other.
+                        </li>
+                    </ul>
+                    <pre>
+const fs = require('fs');
+
+fs.readFile('file1.txt', () => console.log('file1 done'));
+fs.readFile('file2.txt', () => console.log('file2 done'));
+console.log('Other code runs while reading files...');
+
+// Output order:
+// Other code runs while reading files...
+// file1 done
+// file2 done
+
+Both file reads are concurrent, thanks to the event loop.
+                    </pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are callbacks in Node.js? What problems do they cause?
+                </div>
+                <div class="answer">
+                    <p>A function passed as an argument to another function, executed after some operation completes (often async)</p>
+
+                    <h4>Problems with Callbacks:</h4>
+                    <ul>
+                        <li>
+                            Callback Hell: Nested callbacks lead to deeply indented, hard-to-read code.
+                        </li>
+                        <li>
+                            Error Handling: Managing errors across multiple callback layers can be complex.
+                        </li>
+                        <li>
+                            Inversion of Control: Callbacks give control to the callee, making it harder to reason about flow.
+                        </li>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Difference between setImmediate(), process.nextTick(), and setTimeout()
+                </div>
+                <div class="answer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th>When it runs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>process.nextTick()</td>
+                                <td>Executes immediately after the current operation, before the event loop continues.</td>
+                            </tr>
+                            <tr>
+                                <td>setImmediate()</td>
+                                <td>Executes after the current poll phase of the event loop.</td>
+                            </tr>
+                            <tr>
+                                <td>setTimeout(fn, 0)</td>
+                                <td>Executes after at least 0ms, during the timers phase; timing may vary depending on system load.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+<pre>
+process.nextTick(() => console.log('nextTick'));
+setImmediate(() => console.log('setImmediate'));
+setTimeout(() => console.log('setTimeout'), 0);
+
+Order of execution: nextTick → setTimeout / setImmediate (setImmediate may run before setTimeout sometimes depending on context).
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are Streams in Node.js? Types of streams?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>
+                            Streams are objects that read or write data in chunks, rather than all at once.
+                        </li>
+                        <li>Useful for large files, network data, or video streaming.</li>
+                        <li>Types of Streams:
+                            <ul>
+                                <li>Readable: Data can be read from the stream (e.g., fs.createReadStream())</li>
+                                <li>Writable: Data can be written to the stream (e.g., fs.createWriteStream())</li>
+                                <li>Duplex: Both readable and writable (e.g., net.Socket)</li>
+                                <li>Transform: A type of duplex stream that can modify the data as it is read/written (e.g., zlib.createGzip())</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Explain the concept of middleware in Node.js
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Middleware is a function that has access to request (req), response (res), and next function (next).</li>
+                        <li>Used in frameworks like Express to process requests in stages.</li>
+                        <li>Example uses:
+                            <ul>
+                                <li>Request parsing (body-parser)</li>
+                                <li>Authentication (passport.js)</li>
+                                <li>Logging (morgan)</li>
+                                <li>Error handling</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Explain CommonJS vs ES Modules in Node.js
+                </div>
+                <div class="answer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>CommonJS</th>
+                                <th>ES Modules</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Syntax</td>
+                                <td>require(), module.exports</td>
+                                <td>import, export</td>
+                            </tr>
+                            <tr>
+                                <td>Loading</td>
+                                <td>Synchronous (at runtime)</td>
+                                <td>Asynchronous (at compile time)</td>
+                            </tr>
+                            <tr>
+                                <td>File Extension</td>
+                                <td>.js (default)</td>
+                                <td>.mjs or "type": "module" in package.json</td>
+                            </tr>
+                            <tr>
+                                <td>Scope</td>
+                                <td>Module-scoped (each file is its own module)</td>
+                                <td>Module-scoped (each file is its own module)</td>
+                            </tr>
+                            <tr>
+                                <td>Support</td>
+                                <td>Default in Node.js until v12</td>
+                                <td>Supported natively in Node.js v12+ with --experimental-modules flag, stable in v14+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are Promises and async/await in Node.js?
+                </div>
+                <div class="answer">
+                    <p>A Promise represents a value that will be available now, later, or never. It has 3 states:</p>
+                    <ul>
+                        <li>Pending</li>
+                        <li>Fulfilled (resolved)</li>
+                        <li>Rejected</li>
+                    </ul>
+                    
+                    <h4>Example:</h4>
+                    <pre>
+const fetchData = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("Done"), 1000);
+});
+                    </pre>
+                    <h4>Using .then() & .catch():</h4>
+<pre>
+fetchData
+  .then(result => console.log(result)) // "Done" after 1 second
+  .catch(error => console.error(error));
+</pre>
+                    <h4>Async/Await:</h4>
+                    <p>Syntactic sugar over Promises, allows writing asynchronous code in a synchronous style.</p>
+                    <pre>
+async function getData() {
+    try {
+        const result = await fetchData;
+        console.log(result); // "Done"
+    } catch (error) {
+        console.error(error);
+    }
+}
+getData();
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you handle errors in asynchronous code?
+                </div>
+                <div class="answer">
+                    <p>In Node.js, errors in asynchronous code can be handled using:</p>
+                    <ul>
+                        <li>Callbacks: First argument is an error object (if any)</li>
+                        <li>Promises: .catch() method to handle rejections</li>
+                        <li>Async/Await: try/catch blocks to catch errors</li>
+                    </ul>
+
+                    <h4>Using callbacks:</h4>
+<pre>
+fs.readFile('file.txt', (err, data) => {
+  if (err) return console.error(err);
+  console.log(data.toString());
+});
+
+</pre>
+                    <h4>Using Promises:</h4>
+<pre>
+promiseFunction()
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+</pre>
+
+                    <h4>Using async/await::</h4>
+<pre>
+async function run() {
+  try {
+    const data = await promiseFunction();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What are process objects in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        The process object is a global object in Node.js that provides information and control over the current Node.js process. It allows you to interact with the environment in which your application is running.
+                    </p>
+
+                    <h4>Common Uses:</h4>
+                    <ul>
+                        <li>process.pid → Process ID</li>
+                        <li>process.cwd() → Current working directory</li>
+                        <li>process.env → Environment variables</li>
+                        <li>process.argv → Command-line arguments</li>
+                        <li>process.exit() → Exit process</li>
+                        <li>process.memoryUsage() → Memory details</li>
+                        <li>process.uptime() → How long the process has been running</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Difference between spawn, exec, and fork in Node.js
+                </div>
+                <div class="answer">
+                    <h3>spawn()</h3>
+                    <ul>
+                        <li>Used to launch a new process with a given command.</li>
+                        <li>Returns a ChildProcess object.</li>
+                        <li>Streams stdout and stderr (suitable for large outputs).</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+    const { spawn } = require('child_process');
+
+const ls = spawn('ls', ['-l']); // list files in directory
+
+ls.stdout.on('data', (data) => {
+  console.log(`Output: ${data}`);
+});
+
+ls.stderr.on('data', (data) => {
+  console.error(`Error: ${data}`);
+});
+ls.on('close', (code) => {
+  console.log(`Process exited with code ${code}`);
+});
+</pre>
+
+                    <h3>exec()</h3>
+                    <ul>
+                        <li>Used to run a command in a shell and buffers the output.</li>
+                        <li>Returns the output via a callback (suitable for small outputs).</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+const { exec } = require('child_process');
+
+exec('ls -l', (err, stdout, stderr) => {
+  if (err) {
+    console.error(`Error: ${err}`);
+    return;
+  }
+  console.log(`Output: ${stdout}`);
+});
+</pre>
+
+                    <h3>fork()</h3>
+                    <ul>
+                        <li>Specialized version of spawn() to create a new Node.js process.</li>
+                        <li>Used for inter-process communication (IPC) between parent and child processes.</li>
+                        <li>Returns a ChildProcess object with an additional communication channel.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+// parent.js
+const { fork } = require('child_process');
+
+const child = fork('child.js');
+
+child.send('Hello Child');
+
+child.on('message', (msg) => {
+  console.log('Message from child:', msg);
+});
+
+// child.js
+process.on('message', (msg) => {
+  console.log('From parent:', msg);
+  process.send('Got your message!');
+});
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How does clustering work in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        Clustering in Node.js allows you to create multiple child processes (workers) that share the same server port, enabling better utilization of multi-core systems and improving performance for CPU-intensive tasks.
+                    </p>
+
+                    <h4>How it works:</h4>
+                    <ul>
+                        <li>The main process (master) spawns multiple worker processes using the cluster module.</li>
+                        <li>Each worker runs its own instance of the Node.js event loop and can handle incoming requests independently.</li>
+                        <li>The master process distributes incoming connections across the workers using a round-robin algorithm (or other strategies).</li>
+                        <li>If a worker crashes, the master can automatically restart it to maintain availability.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+const cluster = require('cluster');
+const http = require('http');
+const os = require('os');
+
+if (cluster.isMaster) {
+  os.cpus().forEach(() => cluster.fork());
+} else {
+  http.createServer((req, res) => {
+    res.end('Handled by worker ' + process.pid);
+  }).listen(3000);
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How can you achieve multithreading in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        While Node.js is single-threaded by default, you can achieve multithreading using the following methods:
+                    </p>
+                    <ul>
+                        <li>
+                            Worker Threads: Introduced in Node.js v10.5.0, the worker_threads module allows you to create multiple threads within a single Node.js process. Each worker thread runs in its own V8 instance and can communicate with the main thread via message passing.
+                        </li>
+                        <li>
+                            Child Processes: The child_process module allows you to spawn separate Node.js processes that can run concurrently. Each child process has its own event loop and memory space, enabling true parallelism.
+                        </li>
+                        <li>
+                            Clustering: As discussed earlier, clustering allows you to create multiple worker processes that share the same server port, effectively utilizing multiple CPU cores.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is libuv and what is its role in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        libuv is a multi-platform C library that provides Node.js with its event-driven, non-blocking I/O model. It abstracts away the underlying operating system differences and provides a consistent API for asynchronous operations.
+                    </p>
+
+                    <h4>Role of libuv in Node.js:</h4>
+                    <ul>
+                        <li>Event Loop: libuv implements the event loop, which is the core of Node.js's asynchronous architecture. It manages the execution of callbacks and handles I/O operations.</li>
+                        <li>Asynchronous I/O: libuv provides non-blocking I/O operations for file systems, networking, and other system resources, allowing Node.js to handle multiple operations concurrently without blocking the main thread.</li>
+                        <li>Thread Pool: For operations that cannot be performed asynchronously (like DNS resolution or file system operations), libuv uses a thread pool to offload these tasks, ensuring that the main event loop remains responsive.</li>
+                        <li>Cross-Platform Support: libuv abstracts platform-specific details, allowing Node.js to run on various operating systems (Windows, Linux, macOS) without changes to the application code.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you handle uncaught exceptions in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        Uncaught exceptions in Node.js can be handled using the following methods:
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>process.on('uncaughtException', (err) => { ... }):</strong> This event is emitted when an exception bubbles all the way back to the event loop. You can log the error and perform cleanup tasks, but it's generally recommended to exit the process after handling the exception, as the application may be in an inconsistent state.
+                        </li>
+                        <li>
+                            <strong>process.on('unhandledRejection', (reason, promise) => { ... }):</strong> This event is emitted when a Promise is rejected and there is no .catch() handler. Similar to uncaughtException, you can log the error and perform cleanup tasks.
+                        </li>      
+                    </ul>
+
+                    <h4>Example:</h4>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Difference between process.env and dotenv
+                </div>
+                <div class="answer">
+                    <h3>process.env</h3>
+                    <ul>
+                        <li>Built-in Node.js object that provides access to environment variables.</li>
+                        <li>Environment variables can be set in the operating system or shell before starting the Node.js application.</li>
+                        <li>Accessed directly in code using process.env.VARIABLE_NAME.</li>
+                    </ul>
+
+                    <h3>dotenv</h3>
+                    <ul>
+                        <li>A popular third-party package that loads environment variables from a .env file into process.env.</li>
+                        <li>Helps manage environment-specific configurations (development, production) without hardcoding values in the code.</li>
+                        <li>Requires installation via npm and configuration in the application code.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is JWT and how is it implemented in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        JWT (JSON Web Token) is a compact, URL-safe means of representing claims to be transferred between two parties. It is commonly used for authentication and authorization in web applications.
+                    </p>
+
+                    <h4>Structure of JWT:</h4>
+                    <ul>
+                        <li>Header: Contains metadata about the token (type, algorithm).</li>
+                        <li>Payload: Contains the claims (user data, expiration time).</li>
+                        <li>Signature: Ensures the token's integrity and authenticity.</li>
+                    </ul>
+
+                    <h4>Implementation in Node.js:</h4>
+                    <ul>
+                        <li>Install a JWT library like jsonwebtoken using npm.</li>
+                        <li>Create a token upon user login, embedding user information in the payload.</li>
+                        <li>Send the token to the client, typically in the Authorization header.</li>
+                        <li>On subsequent requests, verify the token on the server to authenticate the user.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+const jwt = require('jsonwebtoken');
+const secretKey = 'your_secret_key';
+
+// Create a token
+const token = jwt.sign({ userId: 123 }, secretKey, { expiresIn: '1h' });
+// Verify a token
+try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded); // { userId: 123, iat: ..., exp: ... }
+} catch (err) {
+    console.error('Invalid token');
+}
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    What is rate limiting and how would you implement it in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        Rate limiting is a technique used to control the number of requests a user can make to a server within a specified time frame. It helps prevent abuse, reduce server load, and improve overall application performance.
+                    </p>
+
+                    <h4>Implementation in Node.js:</h4>
+                    <ul>
+                        <li>Use middleware like express-rate-limit for Express applications.</li>
+                        <li>Configure the middleware with options such as windowMs (time frame) and max (maximum requests allowed).</li>
+                        <li>Apply the middleware to specific routes or globally to all routes.</li>
+                    </ul>
+
+                    <h4>Example:</h4>
+<pre>
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter); // Apply to all requests
+</pre>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you secure a Node.js app from SQL Injection & XSS?
+                </div>
+                <div class="answer">
+                    <h3>SQL Injection Prevention:</h3>
+                    <ul>
+                        <li>Use parameterized queries or prepared statements to separate SQL code from data.</li>
+                        <li>Use ORM libraries (like Sequelize, TypeORM) that handle query building and escaping.</li>
+                        <li>Validate and sanitize user inputs to ensure they conform to expected formats.</li>
+                        <li>Limit database permissions for the application user to only necessary operations.</li>
+                    </ul>
+
+                    <h3>XSS Prevention:</h3>
+                    <ul>
+                        <li>Escape user-generated content before rendering it in the browser (e.g., using libraries like DOMPurify).</li>
+                        <li>Use Content Security Policy (CSP) headers to restrict sources of executable scripts.</li>
+                        <li>Validate and sanitize inputs on both client and server sides.</li>
+                        <li>Avoid using eval() or similar functions that execute arbitrary code.</li>
+                        <li>Use secure templating engines that automatically escape output (e.g., Handlebars, EJS).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How does garbage collection work in Node.js?
+                </div>
+                <div class="answer">
+                    <p>
+                        Garbage collection in Node.js is managed by the V8 JavaScript engine, which uses a combination of algorithms to automatically reclaim memory that is no longer in use by the application.
+                    </p>
+
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Mark-and-Sweep Algorithm: V8 periodically scans the memory to identify objects that are still reachable (in use) and those that are not. Unreachable objects are marked for garbage collection.</li>
+                        <li>Generational Garbage Collection: V8 divides objects into two generations - young and old. Young generation objects are short-lived and collected more frequently, while old generation objects are long-lived and collected less often.</li>
+                        <li>Incremental and Concurrent Collection: V8 performs garbage collection in small increments to minimize pause times, allowing the application to continue running while garbage collection occurs in the background.</li>
+                    </ul>
+
+                    <h4>Best Practices to Optimize Garbage Collection:</h4>
+                    <ul>
+                        <li>Avoid memory leaks by ensuring that references to unused objects are removed.</li>
+                        <li>Use tools like Node.js's built-in --inspect flag or third-party libraries (e.g., heapdump, memwatch) to monitor memory usage and identify leaks.</li>
+                        <li>Optimize data structures and algorithms to reduce memory consumption.</li>
+                        <li>Avoid creating large numbers of short-lived objects in performance-critical code paths.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    How do you monitor and debug performance issues in Node.js?
+                </div>
+                <div class="answer">
+                    <ul>
+                        <li>Use built-in tools like the Node.js --inspect flag to enable debugging and profiling.</li>
+                        <li>Utilize third-party monitoring tools like New Relic, Datadog, or AppDynamics for real-time performance monitoring.</li>
+                        <li>Analyze CPU and memory usage using tools like Clinic.js, PM2, or Node Clinic.</li>
+                        <li>Use logging libraries (e.g., Winston, Bunyan) to capture detailed logs for analysis.</li>
+                        <li>Profile the application using the V8 profiler or Chrome DevTools to identify bottlenecks in code execution.</li>
+                        <li>Implement health checks and alerts to proactively monitor application performance and availability.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="qa-item">
+                <div class="question" onclick="toggleAnswer(this)">
+                    Difference between process.nextTick() and queueMicrotask()
+                </div>
+                <div class="answer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>process.nextTick()</th>
+                                <th>queueMicrotask()</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Execution Timing</td>
+                                <td>Executes after the current operation completes, before the event loop continues.</td>
+                                <td>Executes at the end of the current JavaScript execution context, before any I/O events or timers.</td>
+                            </tr>
+                            <tr>
+                                <td>Use Case</td>
+                                <td>Used to defer execution of a function until after the current call stack is cleared, often for I/O operations.</td>
+                                <td>Used for scheduling microtasks that need to run immediately after the current script, such as promise callbacks.</td>
+                            </tr>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Can lead to starvation of I/O operations if used excessively, as it runs before the event loop continues.</td>
+                                <td>More efficient for scheduling tasks that need to run immediately after the current script without blocking I/O.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            document.querySelectorAll('.question').forEach((question) => {
+                question.addEventListener('click', () => {
+                    // Optional: close all others (accordion effect)
+                    document.querySelectorAll('.question').forEach(q => {
+                        if (q !== question) q.classList.remove('active');
+                    });
+
+                    document.querySelectorAll('.answer').forEach(a => {
+                        if (a !== question.nextElementSibling) a.classList.remove('show');
+                    });
+
+                    // Toggle current
+                    question.classList.toggle('active');
+                    const answer = question.nextElementSibling;
+                    answer.classList.toggle('show');
+                });
+            });
+        </script>
+    </body>
+</html>
