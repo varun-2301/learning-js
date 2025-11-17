@@ -179,34 +179,6 @@
     </div>
 
     <div class="question-card">
-        <div class="question">console.log(null + 1)</div>
-            <details>
-            <summary>Output & Explanation</summary>
-            <div class="answer">1</div>
-            <div class="explanation">
-                <ul>
-                    <li>With +, If any operand is a string → concatenation else → numeric addition</li>
-                    <li>null when converted to a number is 0</li>
-                    <li>So the output is 0 + 1 = 1</li>
-                </ul>
-            </div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question">console.log(typeof NaN)</div>
-            <details>
-            <summary>Output & Explanation</summary>
-            <div class="answer">"number"</div>
-            <div class="explanation">
-                <ul>
-                    <li>NaN stands for “Not-a-Number”, but ironically, its type in JavaScript is still "number"</li>
-                </ul>
-            </div>
-        </details>
-    </div>
-
-    <div class="question-card">
         <div class="question">console.log([] == ![])</div>
             <details>
             <summary>Output & Explanation</summary>
@@ -367,6 +339,60 @@ console.log(a, b)
         </details>
     </div>
 
+    <div class="question-card">
+        <div class="question">
+<pre>
+    for(var i = 0; i < 5; i++){
+        setTimeOut((i) => {
+            console.log('called', i)
+        }, 1000, i)
+    }
+</pre>
+        </div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">
+<pre>
+0,1,2,3,4
+</pre>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>Passing i into setTimeout makes a fresh copy of i each time
+                        <pre>setTimeout(callback, delay, i)</pre>
+                    </li>
+                    <li>The callback receives it as a parameter
+                        <pre>(i) => console.log(i)</pre>
+                    </li>
+                    <li>Each callback “remembers” the correct value.</li>
+                </ul>
+            </div>
+        </details>
+    </div>
 
+    <div class="question-card">
+        <div class="question">
+<pre>
+    for(let i = 0; i < 5; i++){
+        setTimeOut(() => {
+            console.log('called', i)
+        }, 1000)
+    }
+</pre>
+        </div>
+            <details>
+            <summary>Output & Explanation</summary>
+            <div class="answer">
+<pre>
+0,1,2,3,4
+</pre>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>let is block-scoped, so each iteration has its own i</li>
+                </ul>
+            </div>
+        </details>
+    </div>
 </body>
 </html>

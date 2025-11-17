@@ -5,11 +5,11 @@ const CounterButton = React.memo(({ onClick, label }) => {
     )
 })
 
-const App = () => {
-    const [count, setCount] = React.useState(0)
+const CounterHook = (initialVal = 0) => {
+    const [count, setCount] = React.useState(initialVal)
 
     const increment = React.useCallback(() => {
-        setCount((prev) => prev + 1);
+        setCount(prev => prev + 1)
     },[])
 
     const decrement = React.useCallback(() => {
@@ -19,6 +19,12 @@ const App = () => {
     const reset = React.useCallback(() => {
         setCount(0)
     }, [])
+
+    return { count, increment, decrement, reset}
+}
+
+const App = () => {
+    const {count, increment, decrement, reset} = CounterHook(0)
 
     return (
         <div className="container">
