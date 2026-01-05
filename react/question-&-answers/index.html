@@ -1270,6 +1270,81 @@ const ProductList = ({ products }) => {
             </div>
         </div>
 
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
+                React Fiber
+            </div>
+            <div class="answer">
+                <p>React Fiber is React’s new reconciliation algorithm that enables incremental rendering, prioritization, and interruptible updates for better UI performance</p>
+
+                <br/>
+                <p>A Fiber is a JavaScript object that represents:
+                    <ul>
+                        <li>A component</li>
+                        <li>Its state</li>
+                        <li>Its props</li>
+                        <li>Its relationship to other components (parent/child/sibling)</li>
+                    </ul>
+                </p>
+
+                <br/>
+                <h4>Incremental Rendering</h4>
+                    <p>React can split rendering work into chunks.</p>
+                    <p>If something more important happens (like typing or clicking), React can:
+                        <ul>
+                            <li>
+                                Pause rendering
+                            </li>
+                            <li>
+                                Handle the user action
+                            </li>
+                            <li>
+                                Resume rendering later
+                            </li>
+                        </ul>
+                    </p>
+
+                <br/>
+                <h4>Better Animations & UX</h4>
+                    <p>Because rendering is interruptible:
+                        <ul>
+                            <li>Animations stay smooth</li>
+                            <li>Scrolling doesn’t lag</li>
+                            <li>UI stays responsive</li>
+                        </ul>
+                    </p>
+
+                <br/>
+                <h4>Priority-based Updates</h4>
+                    <p>Different updates have different priorities.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Update Type</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>User input (typing, clicks)</td>
+                                <td>🔥 High</td>
+                            </tr>
+                            <tr>
+                                <td>Animations</td>
+                                <td>🔥 High</td>
+                            </tr>
+                            <tr>
+                                <td>Data fetching updates</td>
+                                <td>⚠️ Medium</td>
+                            </tr>
+                            <tr>
+                                <td>Background updates</td>
+                                <td>🧊 Low</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
 
     </div>
 

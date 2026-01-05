@@ -439,6 +439,36 @@ async function fetchInSequence() {
 
         <div class="qa-item">
             <div class="question" onclick="toggleAnswer(this)">
+                pure function in js
+            </div>
+            <div class="answer">
+                <h4>Same input → Always produces same output</h4>
+                <ul>
+                    <li>No randomness, no dependency on external variables</li>
+                </ul>
+
+                <h4>No side effects</h4>
+                <ul>
+                    <li>It only returns a value</li>
+                    <li>does not modify global variables, arguments, files, DOM, state, db</li>
+                </ul>
+
+                <h4>Example</h4>
+<pre>
+function add(a, b) {
+  return a + b;
+}
+
+<p>
+Same inputs always give same output
+Does not modify anything
+</p>
+</pre>
+            </div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question" onclick="toggleAnswer(this)">
                 High order functions
             </div>
             <div class="answer">

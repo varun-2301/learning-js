@@ -57,7 +57,7 @@ const App = () => {
                 <button onClick={resetTimer} data-testid="reset-button">Reset</button>
             </div>
             <div className="timer-status">
-                {isRunning ? <span data-testid="status">Running</span> : <span data-testid="status">Stopped</span>}
+                <span data-testid="status">{isRunning ? "Running" : "Stopped"}</span>
             </div>
         </div>
     )
