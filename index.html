@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>learning-js — index</title>
+<style>
+  :root{
+    --bg:#0b0d12;
+    --panel:#11141b;
+    --panel-2:#151924;
+    --border:#232735;
+    --text:#e4e7ee;
+    --muted:#7d8494;
+    --muted-2:#565c6c;
+    --amber:#f2b544;
+    --green:#7ee787;
+    --blue:#79c0ff;
+    --pink:#ff9bce;
+    --mono: ui-monospace, "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--mono);
+    font-size:14px;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  .titlebar{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 16px;
+    border-bottom:1px solid var(--border);
+    background:var(--panel);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.red{background:#ff5f56;}
+  .dot.yellow{background:#ffbd2e;}
+  .dot.green{background:#27c93f;}
+  .tabname{margin-left:14px;color:var(--muted);font-size:12.5px;}
+  .tabname b{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 20px 80px;}
+
+  .hero{margin-bottom:22px;}
+  .hero .comment{color:var(--muted-2);}
+  .hero h1{
+    font-size:22px;font-weight:600;margin:4px 0 6px;
+    color:var(--text);
+  }
+  .hero h1 .kw{color:var(--pink);}
+  .hero h1 .str{color:var(--green);}
+  .hero p{color:var(--muted);margin:0;font-size:13px;}
+  .hero p a{color:var(--blue);border-bottom:1px dashed rgba(121,192,255,.35);}
+  .hero p a:hover{border-bottom-style:solid;}
+
+  .cmdbar{
+    display:flex;align-items:center;gap:10px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 14px;
+    margin:20px 0 14px;
+  }
+  .cmdbar .prompt{color:var(--green);}
+  .cmdbar input{
+    flex:1;background:transparent;border:0;outline:0;
+    color:var(--text);font-family:var(--mono);font-size:14px;
+    caret-color:var(--green);
+  }
+  .cmdbar input::placeholder{color:var(--muted-2);}
+  .cmdbar .count{color:var(--muted-2);font-size:12px;white-space:nowrap;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px;}
+  .chip{
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--muted);
+    padding:5px 11px;border-radius:20px;
+    font-size:12px;cursor:pointer;
+    user-select:none;
+  }
+  .chip:hover{color:var(--text);border-color:var(--muted-2);}
+  .chip.active{
+    color:var(--bg);background:var(--amber);border-color:var(--amber);
+    font-weight:600;
+  }
+
+  .group{margin-bottom:26px;}
+  .group-title{
+    display:flex;align-items:center;gap:8px;
+    color:var(--muted);font-size:12px;
+    text-transform:uppercase;letter-spacing:.06em;
+    margin:0 0 8px 2px;
+  }
+  .group-title .n{color:var(--muted-2);}
+
+  .file-list{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--panel);
+  }
+  .row{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 12px;
+    border-bottom:1px solid var(--border);
+    transition:background .12s;
+  }
+  .row:last-child{border-bottom:0;}
+  .row:hover{background:var(--panel-2);}
+  .ln{
+    color:var(--muted-2);
+    width:34px;text-align:right;flex:none;
+    font-size:12.5px;
+    user-select:none;
+  }
+  .code{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .code .kw{color:var(--pink);}
+  .code .fn{color:var(--blue);}
+  .code .path{color:var(--muted);}
+  .code .str{color:var(--green);}
+  .tag{
+    flex:none;font-size:10.5px;
+    color:var(--amber);
+    border:1px solid rgba(242,181,68,.35);
+    padding:2px 7px;border-radius:4px;
+    margin-left:6px;
+  }
+  .tag.script{color:var(--muted);border-color:var(--border);}
+  .actions{flex:none;display:flex;gap:4px;}
+  .btn{
+    font-size:11.5px;padding:4px 9px;border-radius:5px;
+    border:1px solid var(--border);color:var(--muted);
+    white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--muted-2);color:var(--text);}
+  .btn.run{color:var(--green);border-color:rgba(126,231,135,.3);}
+  .btn.run:hover{background:rgba(126,231,135,.1);}
+  .btn.edit{color:var(--blue);border-color:rgba(121,192,255,.3);}
+  .btn.edit:hover{background:rgba(121,192,255,.1);}
+
+  .state{
+    text-align:center;color:var(--muted);
+    padding:50px 20px;border:1px dashed var(--border);
+    border-radius:8px;
+  }
+  .state .big{color:var(--text);font-size:15px;margin-bottom:6px;}
+  .state a{color:var(--blue);}
+
+  footer{
+    color:var(--muted-2);font-size:11.5px;
+    text-align:center;margin-top:34px;
+  }
+
+  @media (max-width:600px){
+    .ln{display:none;}
+    .actions{flex-direction:column;align-items:flex-end;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="titlebar">
+    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+    <div class="tabname"><b>index.html</b> — learning-js</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="hero">
+      <div class="comment">// MERN interview prep — auto-indexed from GitHub, always current</div>
+      <h1><span class="kw">const</span> questions = <span class="str">require</span>(<span class="str">'varun-2301/learning-js'</span>)</h1>
+      <p>
+        Every runnable file in this repo, listed live from the GitHub API — no manual updates needed when new questions get pushed.
+        <b>Run</b> opens the demo hosted on GitHub Pages · <b>Edit</b> opens it live in StackBlitz · <b>Src</b> opens the raw file.
+      </p>
+    </div>
+
+    <div class="cmdbar">
+      <span class="prompt">&gt;</span>
+      <input id="search" type="text" placeholder="filter by name, folder, or topic…" autocomplete="off" />
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div id="content">
+      <div class="state">
+        <div class="big">loading tree…</div>
+        fetching <code>varun-2301/learning-js@main</code> from the GitHub API
+      </div>
+    </div>
+
+    <footer>generated client-side on every page load · rate-limited to 60 requests/hr per visitor (GitHub's unauthenticated API limit)</footer>
+  </div>
+
+<script>
+const REPO = 'varun-2301/learning-js';
+const BRANCH = 'main';
+const PAGES_BASE = 'https://varun-2301.github.io/learning-js/';
+const SRC_BASE = `https://github.com/${REPO}/blob/${BRANCH}/`;
+const STACKBLITZ_BASE = `https://stackblitz.com/github/${REPO}/tree/${BRANCH}`;
+
+const CATEGORY_ORDER = [
+  'JS · Concepts', 'JS · Programs', 'JS · Q&A', 'JS · Outputs',
+  'React · Programs', 'React · Q&A', 'React · Test',
+  'Node · Q&A', 'MongoDB · Q&A', 'Deployment', 'Other'
+];
+
+function humanize(str){
+  return str
+    .replace(/[-_]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function classify(path){
+  const parts = path.split('/');
+  const top = parts[0];
+  const topLabel = { js:'JS', react:'React', node:'Node', mongodb:'MongoDB', 'deployment-flow':'Deployment' }[top] || humanize(top);
+
+  if (top === 'deployment-flow') return 'Deployment';
+
+  let sub = 'Other';
+  if (parts.includes('question-&-answers')) sub = 'Q&A';
+  else if (parts.includes('programs')) sub = 'Programs';
+  else if (parts.includes('concepts')) sub = 'Concepts';
+  else if (parts.includes('outputs')) sub = 'Outputs';
+  else if (parts.includes('test')) sub = 'Test';
+
+  return `${topLabel} · ${sub}`;
+}
+
+function entryName(path, runnable){
+  const parts = path.split('/');
+  if (runnable) {
+    // .../<folder>/index.html -> use folder name, unless it's the repo-root style (deployment-flow/index.html)
+    const folder = parts.length >= 2 ? parts[parts.length - 2] : parts[0];
+    return humanize(folder);
+  }
+  // console-only .js file -> use its folder name too
+  const folder = parts.length >= 2 ? parts[parts.length - 2] : parts[0];
+  return humanize(folder);
+}
+
+async function loadTree(){
+  const res = await fetch(`https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`);
+  if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+  const data = await res.json();
+  return (data.tree || []).filter(i => i.type === 'blob');
+}
+
+function buildEntries(blobs){
+  const entries = [];
+
+  blobs.forEach(({ path }) => {
+    const isIndexHtml = /(^|\/)index\.html$/.test(path);
+    const isConsoleProgram = /^js\/programs\/[^/]+\/index\.js$/.test(path);
+
+    if (!isIndexHtml && !isConsoleProgram) return;
+
+    entries.push({
+      path,
+      name: entryName(path, isIndexHtml),
+      category: classify(path),
+      runnable: isIndexHtml,
+      runUrl: PAGES_BASE + path,
+      editUrl: `${STACKBLITZ_BASE}?file=${encodeURIComponent(path)}`,
+      srcUrl: SRC_BASE + path
+    });
+  });
+
+  // de-dupe by path just in case
+  const seen = new Set();
+  return entries.filter(e => (seen.has(e.path) ? false : (seen.add(e.path), true)));
+}
+
+function render(entries, activeCategory, query){
+  const content = document.getElementById('content');
+  const countEl = document.getElementById('count');
+
+  let filtered = entries;
+  if (activeCategory !== 'All') filtered = filtered.filter(e => e.category === activeCategory);
+  if (query.trim()) {
+    const q = query.trim().toLowerCase();
+    filtered = filtered.filter(e => e.name.toLowerCase().includes(q) || e.path.toLowerCase().includes(q));
+  }
+
+  countEl.textContent = `${filtered.length} / ${entries.length} files`;
+
+  if (!filtered.length) {
+    content.innerHTML = `<div class="state"><div class="big">no matches</div>try a different search term</div>`;
+    return;
+  }
+
+  const groups = {};
+  filtered.forEach(e => { (groups[e.category] ||= []).push(e); });
+
+  const orderedCats = CATEGORY_ORDER.filter(c => groups[c]).concat(
+    Object.keys(groups).filter(c => !CATEGORY_ORDER.includes(c))
+  );
+
+  let ln = 1;
+  content.innerHTML = orderedCats.map(cat => {
+    const rows = groups[cat].sort((a,b) => a.name.localeCompare(b.name)).map(e => {
+      const line = ln++;
+      const actions = e.runnable
+        ? `<a class="btn run" href="${e.runUrl}" target="_blank" rel="noopener">▶ Run</a>
+           <a class="btn edit" href="${e.editUrl}" target="_blank" rel="noopener">✎ Edit</a>
+           <a class="btn" href="${e.srcUrl}" target="_blank" rel="noopener">Src</a>`
+        : `<a class="btn edit" href="${e.editUrl}" target="_blank" rel="noopener">✎ Open</a>
+           <a class="btn" href="${e.srcUrl}" target="_blank" rel="noopener">Src</a>`;
+
+      return `
+        <div class="row">
+          <div class="ln">${line}</div>
+          <div class="code">
+            <span class="kw">import</span> { <span class="fn">${e.name}</span> } <span class="kw">from</span> <span class="str">'${e.path}'</span>
+          </div>
+          ${e.runnable ? '' : '<span class="tag script">console</span>'}
+          <div class="actions">${actions}</div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="group">
+        <div class="group-title">${cat} <span class="n">— ${groups[cat].length}</span></div>
+        <div class="file-list">${rows}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderChips(entries, active, onPick){
+  const chipsEl = document.getElementById('chips');
+  const cats = ['All', ...CATEGORY_ORDER.filter(c => entries.some(e => e.category === c))];
+  chipsEl.innerHTML = cats.map(c =>
+    `<div class="chip${c === active ? ' active' : ''}" data-cat="${c}">${c}</div>`
+  ).join('');
+  chipsEl.querySelectorAll('.chip').forEach(el => {
+    el.addEventListener('click', () => onPick(el.dataset.cat));
+  });
+}
+
+(async function init(){
+  let entries = [];
+  let activeCategory = 'All';
+
+  try {
+    const cacheKey = 'learning-js-tree-cache';
+    let blobs;
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      blobs = JSON.parse(cached);
+    } else {
+      blobs = await loadTree();
+      sessionStorage.setItem(cacheKey, JSON.stringify(blobs));
+    }
+    entries = buildEntries(blobs);
+  } catch (err) {
+    document.getElementById('content').innerHTML = `
+      <div class="state">
+        <div class="big">couldn't reach the GitHub API</div>
+        this is usually GitHub's hourly rate limit for anonymous requests — try again shortly, or
+        browse everything directly on
+        <a href="${STACKBLITZ_BASE}" target="_blank" rel="noopener">StackBlitz</a>
+        or <a href="https://github.com/${REPO}" target="_blank" rel="noopener">GitHub</a>.
+      </div>`;
+    return;
+  }
+
+  function handleChipClick(cat){
+    activeCategory = cat;
+    renderChips(entries, activeCategory, handleChipClick);
+    render(entries, activeCategory, document.getElementById('search').value);
+  }
+
+  renderChips(entries, activeCategory, handleChipClick);
+  render(entries, activeCategory, '');
+
+  document.getElementById('search').addEventListener('input', (e) => {
+    render(entries, activeCategory, e.target.value);
+  });
+})();
+</script>
+
+</body>
+</html>
